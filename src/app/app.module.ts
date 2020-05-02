@@ -8,10 +8,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatSelectModule } from "@angular/material/select";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfigService } from'./providers/app-config.service';
+
+import { ABMGenericAbmComponent } from './components/generic-abm/generic-abm.component';
+import { ABMGenericFormComponent } from './components/generic-form/generic-form.component';
+
 import { MedicsComponent } from './pages/medics/medics.component';
 
 export function initConfig(appConfig: AppConfigService) {
@@ -21,7 +32,9 @@ export function initConfig(appConfig: AppConfigService) {
 @NgModule({
   declarations: [
     AppComponent,
-    MedicsComponent
+    MedicsComponent,
+    ABMGenericAbmComponent,
+    ABMGenericFormComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +46,14 @@ export function initConfig(appConfig: AppConfigService) {
     ReactiveFormsModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {
@@ -43,6 +63,8 @@ export function initConfig(appConfig: AppConfigService) {
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

@@ -55,6 +55,9 @@ export class ABMGenericFormField {
   /** Array con las opciones del select, con formato*/
   lookups?: Array<Lookup> = [];//fuer type == select
 
+  /** multiple selection */
+  multi?: boolean;
+
   checked?: boolean;  //type == checkbox
   required?: boolean; //type == checkbox
 
@@ -103,6 +106,7 @@ export class ABMGenericFormField {
     disabled?: boolean, //si el campo esta deshabilitado
     validators?: Array<ValidatorFn>,
     lookups?: Array<Lookup>,//fuer type == select
+    multi?: boolean; // type == select -> multiselect = true
     execute?: any,
     placeholder?,
     checked?: boolean,  //type == checkbox
@@ -127,6 +131,7 @@ export class ABMGenericFormField {
     this.disabled = option.disabled;
     this.validators = option.validators;
     this.lookups = option.lookups ? option.lookups : [];
+    this.multi = option.multi;
     this.execute = option.execute;
     this.checked = option.checked;
     this.required = option.required;

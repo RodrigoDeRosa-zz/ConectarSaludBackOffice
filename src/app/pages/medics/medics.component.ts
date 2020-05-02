@@ -117,8 +117,12 @@ export class MedicsComponent implements OnInit {
       new ABMGenericFormField({ name: 'dni', value: "", title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
       new ABMGenericFormField({ name: 'email', value: "", title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'licence', value: "", title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
-      new ABMGenericFormField({ name: 'specialities', value: "", title: 'Especialidades', type: 'text', validators: [Validators.required], size: 'span-6' }),
-      new ABMGenericFormField({ name: 'centers', value: "", title: 'Centros de salud', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'specialities', value: "", title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
+        multi: true, lookups: [{ value: "Clinic", key: "Clinic" }, { value: "Pediatric", key: "Pediatric" }]
+      }),
+      new ABMGenericFormField({ name: 'centers', value: "", title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6' ,
+        multi: true, lookups: [{ value: "Hospital", key: "Hospital San Jose" }, { value: "Hospital Hornos", key: "Hospital Hornos" }]
+      }),
       new ABMGenericFormField({ name: 'availability', value: "", title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
     ];
 
@@ -146,7 +150,8 @@ export class MedicsComponent implements OnInit {
           "Pediatric"
         ],
         centers: [
-          "Hospital Pirovano"
+          "Hospital",
+          "Hospital Hornos"
         ],
         availability: [
           {
@@ -179,8 +184,8 @@ export class MedicsComponent implements OnInit {
         dni: req.dni,
         email: req.email,
         licence: req.licence,
-        specialities: req.specialities.join('/'),
-        centers: req.centers.join('/'),
+        specialities: req.specialities,
+        centers: req.centers,
         availability: req.availability.map((r) => {
           return r.day+': '+r.from+' a '+r.to
         }).join('/'),

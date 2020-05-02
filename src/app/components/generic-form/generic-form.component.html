@@ -36,7 +36,7 @@
 					<!-- SELECT -->
 					<mat-form-field style="width: 100%" *ngIf="field.type == 'select'">
 						<mat-label>{{field.title}}</mat-label>
-						<mat-select [(value)]="field.checked" [id]="field.name" [formControl]="genericForm.get(field.name)">
+						<mat-select [(value)]="field.checked" [id]="field.name" [formControl]="genericForm.get(field.name)" [multiple]="field.multi" >
 							<mat-option *ngFor="let lookup of field.lookups" [value]="lookup.key">
 								{{lookup.value}}
 							</mat-option>

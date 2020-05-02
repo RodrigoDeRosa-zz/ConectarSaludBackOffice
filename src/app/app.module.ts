@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfigService } from'./providers/app-config.service';
+import { MedicsComponent } from './pages/medics/medics.component';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadConfig();
@@ -19,7 +20,8 @@ export function initConfig(appConfig: AppConfigService) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MedicsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, QueryList, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
+import { ToastrService } from 'ngx-toastr';
+
 import { FormTab } from '../../models/form-tab';
 import * as _ from 'lodash';
 import { ABMGenericFormComponent } from '../generic-form/generic-form.component';
@@ -52,7 +54,7 @@ export class ABMGenericAbmComponent implements OnInit {
 	 */
 	values: any;
 
-	constructor() { }
+	constructor(private _toastr: ToastrService) { }
 
 	ngOnInit() {
 		this.listTab.title = this.listTab.title ? this.listTab.title : "Listar";
@@ -115,6 +117,7 @@ export class ABMGenericAbmComponent implements OnInit {
 		this.createTab.contentForm.formConfiguration.onSubmit(callObject.values, (res) => {
 			callObject.onSubmitCallback(res);
 			if (res.success) {
+        this._toastr.success(res.success.message, "Operacion exitosa");
 				this.goToList();
 			}
 		})
@@ -129,6 +132,7 @@ export class ABMGenericAbmComponent implements OnInit {
 		this.editTab.contentForm.formConfiguration.onSubmit(callObject.values, (res) => {
 			callObject.onSubmitCallback(res);
 			if (res.success) {
+        this._toastr.success(res.success.message, "Operacion exitosa");
 				this.goToList();
 			}
 		})

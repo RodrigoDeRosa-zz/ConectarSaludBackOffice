@@ -23,8 +23,12 @@ export class MedicsComponent implements OnInit {
    */
   columns: TableColumns[] = [
     {
-      name: 'Nombre y apellido',
-      key: 'firstAndLastname'
+      name: 'Nombre',
+      key: 'name'
+    },
+    {
+      name: 'Apellido',
+      key: 'surname'
     },
     {
       name: 'DNI',
@@ -108,9 +112,10 @@ export class MedicsComponent implements OnInit {
     this.editTab = new FormTab('form');
 
     this.createTab.contentForm.data = [
-      new ABMGenericFormField({ name: 'nameAndLastname', value: "", title: 'Nombre y apellido', type: 'text', validators: [Validators.required], size: 'span-6' }),
-      new ABMGenericFormField({ name: 'dni', value: "", title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-6', disabled: false }),
-      new ABMGenericFormField({ name: 'email', value: "", title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'name', value: "", title: 'Nombre', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'surname', value: "", title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'dni', value: "", title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
+      new ABMGenericFormField({ name: 'email', value: "", title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'licence', value: "", title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'specialities', value: "", title: 'Especialidades', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'centers', value: "", title: 'Centros de salud', type: 'text', validators: [Validators.required], size: 'span-6' }),
@@ -134,16 +139,23 @@ export class MedicsComponent implements OnInit {
         name: "Jhon",
         surname: "Doe",
         dni: "23456789",
+        email: "john@doe.com",
         licence: "12342",
         specialities: [
-          "Clinic"
+          "Clinic",
+          "Pediatric"
         ],
         centers: [
           "Hospital Pirovano"
         ],
         availability: [
           {
-            day: "monday",
+            day: "Lunes",
+            from: "18:00",
+            to: "18:30"
+          },
+          {
+            day: "Martes",
             from: "18:00",
             to: "18:30"
           }
@@ -162,13 +174,16 @@ export class MedicsComponent implements OnInit {
       }
 
       return {
-        firstAndLastname: req.name+' '+req.surname,
+        name: req.name,
+        surname: req.surname,
         dni: req.dni,
         email: req.email,
         licence: req.licence,
-        specialities: req.specialities.join(','),
-        centers: req.centers.join(','),
-        availability: req.availability.join(''),
+        specialities: req.specialities.join('/'),
+        centers: req.centers.join('/'),
+        availability: req.availability.map((r) => {
+          return r.day+': '+r.from+' a '+r.to
+        }).join('/'),
         available
       }
     });
@@ -190,13 +205,15 @@ export class MedicsComponent implements OnInit {
   }
 
   submitCreate = (values: any = {}, callback = (res) => { }) => {
-
-    callback({ error: { status: 400, message: "Los campos fueron insertados" } });
+    console.log(values)
+    callback({ success: { status: 200, message: "Los campos fueron insertados" } });
+    //callback({ error: { status: 400, message: "Los campos fueron insertados" } });
   }
 
   submitEdit = (values: any = {}, callback: Function = (res) => { }) => {
-
-    callback({ error: { status: 400, message: "Los campos fueron insertados" } });
+    console.log(values)
+    callback({ success: { status: 200, message: "Los campos fueron modificados" } });
+    //callback({ error: { status: 400, message: "Los campos fueron insertados" } });
   }
 
 }

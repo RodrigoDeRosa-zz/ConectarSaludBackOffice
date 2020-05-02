@@ -16,6 +16,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +26,7 @@ import { AppConfigService } from'./providers/app-config.service';
 import { ABMGenericAbmComponent } from './components/generic-abm/generic-abm.component';
 import { ABMGenericFormComponent } from './components/generic-form/generic-form.component';
 import { LayoutContainerComponent } from './components/layout-container/layout-container.component';
+import {TableFilteredComponent} from './components/table-filtered/table-filtered.component';
 
 import { MedicsComponent } from './pages/medics/medics.component';
 
@@ -37,7 +40,8 @@ export function initConfig(appConfig: AppConfigService) {
     MedicsComponent,
     ABMGenericAbmComponent,
     ABMGenericFormComponent,
-    LayoutContainerComponent
+    LayoutContainerComponent,
+    TableFilteredComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,9 @@ export function initConfig(appConfig: AppConfigService) {
     MatSelectModule,
     MatDatepickerModule,
     MatProgressSpinnerModule,
-    MatInputModule
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [
     {

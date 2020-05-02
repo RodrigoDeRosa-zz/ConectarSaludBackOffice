@@ -6,23 +6,40 @@
 	<mat-card-content>
 		<mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="clickOnTab($event)">
 			<mat-tab [label]="listTab.title">
-        {{ listTab | json }}
+        <app-table-filtered
+          [displayedColumns]="listTab.contentList.columns"
+          [displayedData]="listTab.contentList.data"
+          (onUpdate)="toEdit($event)"
+          [configPagination]="listTab.contentList.pagination"
+          [showFilters]="listTab.contentList.tableConfiguration.showFilters"
+          [filterFields]="listTab.contentList.tableConfiguration.filterFields"
+          [filterLoading]="listTab.contentList.tableConfiguration.filterLoading"
+          [isRowClickeable]="listTab.contentList.tableConfiguration.isRowClickeable"
+          [expandable]="listTab.contentList.tableConfiguration.expandable"
+          [rowClickeable]="listTab.contentList.tableConfiguration.rowClickeable"
+          [closeExpandible]="listTab.contentList.tableConfiguration.closeExpandible"
+          (onChangeFilter)="listTab.contentList.tableConfiguration.onChangeFilter($event)"
+          (onSelectRow)="listTab.contentList.tableConfiguration.onSelectRow($event)"
+          (onChangePage)="listTab.contentList.tableConfiguration.onChangePage($event)"
+          (onExpandRow)="listTab.contentList.tableConfiguration.onExpandRow($event)"
+        >
+        </app-table-filtered>
 			</mat-tab>
 			<mat-tab [label]="createTab.title">
 				<generic-form
-				#createForm;
-				[fields]="createTab.contentForm.data"
-				[(initValues)]="createTab.contentForm.initValues"
-				(onSubmit)="save($event)"
-				>
+          #createForm;
+          [fields]="createTab.contentForm.data"
+          [(initValues)]="createTab.contentForm.initValues"
+          (onSubmit)="save($event)"
+        >
 				</generic-form>
 			</mat-tab>
 			<mat-tab [label]="editTab.title" disabled>
 				<generic-form [fields]="editTab.contentForm.data"
-				[(initValues)]="editTab.contentForm.initValues"
-				(onSubmit)="edit($event)"
-				(onDelete)="deleteEdit($event)"
-				>
+          [(initValues)]="editTab.contentForm.initValues"
+          (onSubmit)="edit($event)"
+          (onDelete)="deleteEdit($event)"
+        >
 				</generic-form>
 			</mat-tab>
 		</mat-tab-group>

@@ -23,6 +23,7 @@ import { AppConfigService } from'./providers/app-config.service';
 
 import { ABMGenericAbmComponent } from './components/generic-abm/generic-abm.component';
 import { ABMGenericFormComponent } from './components/generic-form/generic-form.component';
+import { LayoutContainerComponent } from './components/layout-container/layout-container.component';
 
 import { MedicsComponent } from './pages/medics/medics.component';
 
@@ -35,7 +36,8 @@ export function initConfig(appConfig: AppConfigService) {
     AppComponent,
     MedicsComponent,
     ABMGenericAbmComponent,
-    ABMGenericFormComponent
+    ABMGenericFormComponent,
+    LayoutContainerComponent
   ],
   imports: [
     BrowserModule,

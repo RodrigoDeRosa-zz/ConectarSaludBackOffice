@@ -81,8 +81,8 @@ export class ABMGenericAbmComponent implements OnInit {
 		});
 
 		// buttons creation
-		this.createTab.contentForm.data.push({ name: 'cancel', title: 'Cancelar', type: 'button', execute: this.cancelCreate, size: 'span-2', offsetLeft: 'span-8' });
-		this.createTab.contentForm.data.push({ name: 'submit', title: 'Guardar', type: 'submit', size: 'span-2' });
+		this.createTab.contentForm.data.push({ name: 'cancel', title: 'Cancelar', type: 'button', execute: this.cancelCreate, size: 'span-1', offsetLeft: 'span-10' });
+		this.createTab.contentForm.data.push({ name: 'submit', title: 'Guardar', type: 'submit', size: 'span-1' });
 
 		let offet = "span-10";
 		if (this.editTab.contentForm.formConfiguration.onDelete) {

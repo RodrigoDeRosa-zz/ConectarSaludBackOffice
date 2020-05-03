@@ -31,6 +31,7 @@ import { LayoutContainerComponent } from './components/layout-container/layout-c
 import {TableFilteredComponent} from './components/table-filtered/table-filtered.component';
 
 import { MedicsComponent } from './pages/medics/medics.component';
+import { DailyAndHourlyRangeComponent } from './components/daily-and-hourly-range/daily-and-hourly-range.component';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadConfig();
@@ -43,7 +44,8 @@ export function initConfig(appConfig: AppConfigService) {
     ABMGenericAbmComponent,
     ABMGenericFormComponent,
     LayoutContainerComponent,
-    TableFilteredComponent
+    TableFilteredComponent,
+    DailyAndHourlyRangeComponent
   ],
   imports: [
     BrowserModule,

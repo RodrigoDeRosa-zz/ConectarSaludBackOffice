@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import * as _ from 'lodash';
+import {ToastrService} from 'ngx-toastr';
 
 import { FormTab } from '../../models/form-tab';
 import { TableColumns } from '../../models/table-columns';
 import { ABMGenericFormField } from '../../models/generic-form-field';
+import {DoctorsService} from '../../services/doctors.service';
 
 @Component({
   selector: 'app-medics',
@@ -24,11 +26,11 @@ export class MedicsComponent implements OnInit {
   columns: TableColumns[] = [
     {
       name: 'Nombre',
-      key: 'name'
+      key: 'first_name'
     },
     {
       name: 'Apellido',
-      key: 'surname'
+      key: 'last_name'
     },
     {
       name: 'DNI',
@@ -44,7 +46,7 @@ export class MedicsComponent implements OnInit {
     },
     {
       name: 'Especialidades',
-      key: 'specialities'
+      key: 'specialties'
     },
     {
       name: 'Centros',
@@ -52,7 +54,7 @@ export class MedicsComponent implements OnInit {
     },
     {
       name: 'Disponibilidad',
-      key: 'availability'
+      key: 'availability_times'
     },
     {
       name: 'Disponible?',
@@ -102,7 +104,8 @@ export class MedicsComponent implements OnInit {
     totalRecords: 2
   }
 
-  constructor() {}
+  constructor(private _toastr: ToastrService,
+              private _doctorsService: DoctorsService) {}
 
   ngOnInit() {
     this.listTab.contentList.columns = this.columns;
@@ -112,18 +115,18 @@ export class MedicsComponent implements OnInit {
     this.editTab = new FormTab('form');
 
     this.createTab.contentForm.data = [
-      new ABMGenericFormField({ name: 'name', value: "", title: 'Nombre', type: 'text', validators: [Validators.required], size: 'span-3' }),
-      new ABMGenericFormField({ name: 'surname', value: "", title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
-      new ABMGenericFormField({ name: 'dni', value: "", title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
-      new ABMGenericFormField({ name: 'email', value: "", title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
-      new ABMGenericFormField({ name: 'licence', value: "", title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
-      new ABMGenericFormField({ name: 'specialities', value: "", title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
-        multi: true, lookups: [{ value: "Clinic", key: "Clinic" }, { value: "Pediatric", key: "Pediatric" }]
+      new ABMGenericFormField({ name: 'first_name', value: '', title: 'Nombre', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'last_name', value: '', title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'dni', value: '', title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
+      new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'licence', value: '', title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
+        multi: true, lookups: [{ value: 'Clinic', key: 'Clinic' }, { value: 'Pediatric', key: 'Pediatric' }]
       }),
-      new ABMGenericFormField({ name: 'centers', value: "", title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6' ,
-        multi: true, lookups: [{ value: "Hospital", key: "Hospital San Jose" }, { value: "Hospital Hornos", key: "Hospital Hornos" }]
+      new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6' ,
+        multi: true, lookups: [{ value: 'Hospital', key: 'Hospital San Jose' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]
       }),
-      new ABMGenericFormField({ name: 'availability', value: "", title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
     ];
 
     this.editTab.contentForm.data = _.cloneDeep(this.createTab.contentForm.data);
@@ -136,62 +139,36 @@ export class MedicsComponent implements OnInit {
 
   private getAllMedics(onComplete = function () { }) {
     //this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: 10, page: 0 });
+    this._doctorsService.getAllRolesUsingGETResponse({})
+      .subscribe(data => {
+          this.responseData = data.body;
+          this.listTab.contentList.data = _.map(this.responseData, function (req) {
+            let available;
+            if (req.is_available) {
+              available = 'SI';
+            } else {
+              available = 'NO';
+            }
 
-    // call to api
-    this.responseData = [
-      {
-        name: "Jhon",
-        surname: "Doe",
-        dni: "23456789",
-        email: "john@doe.com",
-        licence: "12342",
-        specialities: [
-          "Clinic",
-          "Pediatric"
-        ],
-        centers: [
-          "Hospital",
-          "Hospital Hornos"
-        ],
-        availability: [
-          {
-            day: "Lunes",
-            from: "18:00",
-            to: "18:30"
-          },
-          {
-            day: "Martes",
-            from: "18:00",
-            to: "18:30"
-          }
-        ],
-        is_available: true
-      }
-    ];
-    //this.responsePagination = resp.body.page;
-
-    this.listTab.contentList.data = _.map(this.responseData, function (req) {
-      let available;
-      if (req.is_available) {
-        available = 'SI';
-      } else {
-        available = 'NO';
-      }
-
-      return {
-        name: req.name,
-        surname: req.surname,
-        dni: req.dni,
-        email: req.email,
-        licence: req.licence,
-        specialities: req.specialities,
-        centers: req.centers,
-        availability: req.availability.map((r) => {
-          return r.day+': '+r.from+' a '+r.to
-        }).join('/'),
-        available
-      }
-    });
+            return {
+              first_name: req.first_name,
+              last_name: req.last_name,
+              dni: req.dni,
+              email: req.email,
+              licence: req.licence,
+              specialties: req.specialties,
+              centers: req.centers,
+              availability_times: req.availability_times.map((r) => {
+                return r.day+': '+r.from_time+' a '+r.to_time
+              }).join('/'),
+              available
+            }
+          });
+      },
+      err => {
+        console.error(err);
+        this._toastr.error("Refresque el sitio y vuelva a intentarlo.","Problema al listar medicos")
+      });
 
     /*this.listTab.contentList.pagination = {
       page: this.responsePagination.number,
@@ -211,14 +188,14 @@ export class MedicsComponent implements OnInit {
 
   submitCreate = (values: any = {}, callback = (res) => { }) => {
     console.log(values)
-    callback({ success: { status: 200, message: "Los campos fueron insertados" } });
-    //callback({ error: { status: 400, message: "Los campos fueron insertados" } });
+    callback({ success: { status: 200, message: 'Los campos fueron insertados' } });
+    //callback({ error: { status: 400, message: 'Los campos fueron insertados' } });
   }
 
   submitEdit = (values: any = {}, callback: Function = (res) => { }) => {
     console.log(values)
-    callback({ success: { status: 200, message: "Los campos fueron modificados" } });
-    //callback({ error: { status: 400, message: "Los campos fueron insertados" } });
+    callback({ success: { status: 200, message: 'Los campos fueron modificados' } });
+    //callback({ error: { status: 400, message: 'Los campos fueron insertados' } });
   }
 
 }

@@ -1,0 +1,77 @@
+<form [formGroup]="dynamicForm">
+  <div formArrayName="ranges">
+    <div
+      *ngFor="let filter of rangesFormArray.controls; let i = index;">
+
+      <div
+        [formGroupName]="i"
+        class="container">
+
+        <mat-form-field>
+          <mat-select
+            (selectionChange)="selected()"
+            placeholder="Seleccionar dia"
+            formControlName="day">
+            <mat-option
+              *ngFor="let day of days"
+              [value]="day">
+              {{ day }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select
+            (selectionChange)="selected()"
+            placeholder="Desde"
+            #apiField
+            formControlName="fromTime">
+            <mat-option
+              *ngFor="let fromTime of times"
+              [value]="fromTime">
+              {{ fromTime }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select
+            (selectionChange)="selected()"
+            placeholder="Hasta"
+            formControlName="toTime">
+            <mat-option
+              *ngFor="let toTime of times"
+              [value]="toTime">
+              {{ toTime }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-icon
+          (click)="removeFilterFromRangesFormArray(i)"
+          style="cursor: pointer;">
+          delete
+        </mat-icon>
+
+      </div>
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="addFilterToRangesFormArray()">
+      Agregar rango
+    </button>
+
+    <button
+      class="save"
+      mat-stroked-button
+      color="primary"
+      [disabled]="dynamicForm.invalid || rangesFormArray.controls.length < 1"
+      (click)="save()">
+      Guardar
+    </button>
+
+  </div>
+</form>

@@ -1,0 +1,96 @@
+<form validate [formGroup]="genericForm" (ngSubmit)="submit($event)" (focusout)="onFocusOut($event)">
+	<div class="mdc-layout-grid">
+		<div class="mdc-layout-grid__inner inputs-container">
+
+			<ng-template ngFor let-field [ngForOf]="fields">
+				<div *ngIf="field.offsetLeft" class="mdc-layout-grid__cell--{{field.offsetLeft}}">
+				</div>
+
+				<div *ngIf="!field.hidden && field.type !='button' && field.type !='submit' && field.type !='dragAndDrop' && field.type !='delete' " class="mdc-layout-grid__cell--{{field.size? field.size: 'span-6'}}">
+					<!-- INPUT -->
+					<div class="form-group" *ngIf="field.type == 'text'">
+						<mat-form-field>
+							<input matInput class="form-control" [id]="field.name" [placeholder]="field.title" [formControlName]="field.name">
+						</mat-form-field>
+					</div>
+
+
+					<!-- TEXTAREA -->
+					<div class="form-group" *ngIf="field.type == 'textarea'">
+						<mat-form-field>
+							<textarea matInput class="form-control" [id]="field.name" [placeholder]="field.title" [formControl]="genericForm.get(field.name)"></textarea>
+						</mat-form-field>
+					</div>
+
+					<!-- NUMBER -->
+					<div class="form-group" *ngIf="field.type == 'number' ">
+						<mat-form-field>
+							<input matInput type="number" class="form-control" [id]="field.name" [placeholder]="field.title" [formControl]="genericForm.get(field.name)">
+						</mat-form-field>
+					</div>
+
+					<!-- CHECKBOX -->
+					<mat-checkbox [id]="field.name" *ngIf="field.type == 'checkbox'" [formControl]="genericForm.get(field.name)">{{field.title}}</mat-checkbox>
+
+
+					<!-- SELECT -->
+					<mat-form-field style="width: 100%" *ngIf="field.type == 'select'">
+						<mat-label>{{field.title}}</mat-label>
+						<mat-select [(value)]="field.checked" [id]="field.name" [formControl]="genericForm.get(field.name)" [multiple]="field.multi" >
+							<mat-option *ngFor="let lookup of field.lookups" [value]="lookup.key">
+								{{lookup.value}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+
+					<!-- DATE -->
+					<mat-form-field *ngIf="field.type == 'date' ">
+						<input matInput [matDatepicker]="picker" [id]="field.name" [placeholder]="field.title" [formControl]="genericForm.get(field.name)">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					</mat-form-field>
+
+					<div *ngIf="false">
+						<span class="glyphicon glyphicon-remove form-control-feedback fix-error-icon"></span>
+						<div class="error-msg">
+							Error message for {{field.name}}
+						</div>
+					</div>
+				</div>
+
+				<!-- SUBMIT BUTTON -->
+				<div *ngIf="field.type == 'submit' && !field.hidden" class="mdc-layout-grid__cell--{{field.size? field.size: 'span-6'}}">
+					<button mat-raised-button color="{{field.color? field.color:'primary'}}" type="submit" [disabled]="!genericForm.valid || loading">{{field.title}}
+						<mat-icon *ngIf="loading">
+							<mat-spinner diameter="20"></mat-spinner>
+						</mat-icon>
+					</button>
+				</div>
+
+				<!-- DELETE BUTTON -->
+				<div *ngIf="field.type == 'delete' && !field.hidden" class="mdc-layout-grid__cell--{{field.size? field.size: 'span-6'}}">
+					<button mat-raised-button color="warn" type="button" [disabled]="loading" (click)="delete($event)">{{field.title}}
+						<mat-icon *ngIf="loading">
+							<mat-spinner diameter="20"></mat-spinner>
+						</mat-icon>
+					</button>
+
+				</div>
+
+				<!-- BUTTON -->
+				<div *ngIf="field.type == 'button' && !field.hidden" class="mdc-layout-grid__cell--{{field.size? field.size: 'span-6'}}">
+					<button mat-button type="button" color="{{field.color? 'field.color':'primary'}}" [disabled]="field.disabled" (click)="field.execute($event,getFormValues())">{{field.title}}</button>
+				</div>
+
+				<div *ngIf="field.offsetRight" class="mdc-layout-grid__cell--{{field.offsetLeft}}">
+				</div>
+
+			</ng-template>
+
+
+		</div>
+	</div>
+
+
+
+</form>

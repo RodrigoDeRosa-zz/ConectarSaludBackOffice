@@ -119,7 +119,10 @@ export class ABMGenericAbmComponent implements OnInit {
 			if (res.success) {
         this._toastr.success(res.success.message, "Operacion exitosa");
 				this.goToList();
-			}
+			} else {
+			  console.error(res);
+			  this._toastr.error("Verifique que el DNI y la matrícula no hayan sido cargados en el sistema","Problema al cargar el profesional")
+      }
 		})
 	}
 

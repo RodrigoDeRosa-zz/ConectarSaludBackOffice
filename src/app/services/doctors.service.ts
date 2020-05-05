@@ -9,9 +9,11 @@ import { AppConfigService as __Configuration } from '../providers/app-config.ser
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
 
 import {RestResponseOfPagedResourcesOfDoctors} from '../models/rest-response-of-paged-resources-of-doctors';
+import {DoctorDto} from '../models/doctor-dto';
+import {Doctor} from '../models/doctor';
 
 /**
- * Servicios para el alta,baja y modificacion de los roles
+ * ABM doctors services
  */
 @Injectable({
   providedIn: 'root',
@@ -28,7 +30,7 @@ class DoctorsService extends __BaseService {
   }
 
   /**
-   * @param params The `RolService.GetAllRolesUsingGETParams` containing the following parameters:
+   * @param params The `DoctorsService.getAllRolesUsingGET` containing the following parameters:
    *
    * - `sort`:
    *
@@ -36,17 +38,9 @@ class DoctorsService extends __BaseService {
    *
    * - `page`:
    *
-   * - `nombre`: Ingrese el identificador del Rol
-   *
-   * - `id`: Ingrese el id del rol
-   *
-   * - `descripcion`: Ingrese la descripcion del rol
-   *
-   * - `baja`: Ingrese el estado del rol, true activo, false desactivado
-   *
    * @return OK
    */
-  getAllRolesUsingGETResponse(params: DoctorsService.GetAllRolesUsingGETParams): __Observable<__StrictHttpResponse<RestResponseOfPagedResourcesOfDoctors>> {
+  getAllDoctorsUsingGETResponse(params: DoctorsService.GetAllRolesUsingGETParams): __Observable<__StrictHttpResponse<RestResponseOfPagedResourcesOfDoctors>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -70,6 +64,64 @@ class DoctorsService extends __BaseService {
       })
     );
   }
+
+  /**
+   * Request all doctors
+   * @param params The `DoctorsService.getAllRolesUsingGET` containing the following parameters:
+   *
+   * - `sort`:
+   *
+   * - `size`:
+   *
+   * - `page`:
+   *
+   * @return OK
+   */
+  getAllDoctorsUsingGET(params: DoctorsService.GetAllRolesUsingGETParams): __Observable<RestResponseOfPagedResourcesOfDoctors> {
+    return this.getAllDoctorsUsingGETResponse(params).pipe(
+      __map(_r => _r.body as RestResponseOfPagedResourcesOfDoctors)
+    );
+  }
+
+  /**
+   * Add new doctor
+   * @param doctorDto doctorDto
+   * @return OK
+   */
+  PostDoctorResponse(doctorDto: DoctorDto): __Observable<__StrictHttpResponse<Doctor>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = doctorDto;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `${DoctorsService.PostRolPath}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Doctor>;
+      })
+    );
+  }
+  /**
+   * Post new doctor
+   * @param doctorDto doctorDto
+   * @return OK
+   */
+  PostDoctor(doctorDto: DoctorDto): __Observable<Doctor> {
+    return this.PostDoctorResponse(doctorDto).pipe(
+      __map(_r => _r.body as DoctorDto)
+    );
+  }
+
+
 }
 
 module DoctorsService {

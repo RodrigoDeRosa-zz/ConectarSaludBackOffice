@@ -139,9 +139,9 @@ export class MedicsComponent implements OnInit {
 
   private getAllMedics(onComplete = function () { }) {
     //this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: 10, page: 0 });
-    this._doctorsService.getAllRolesUsingGETResponse({})
+    this._doctorsService.getAllDoctorsUsingGET({})
       .subscribe(data => {
-          this.responseData = data.body;
+          this.responseData = data;
           this.listTab.contentList.data = _.map(this.responseData, function (req) {
             let available;
             if (req.is_available) {
@@ -158,9 +158,9 @@ export class MedicsComponent implements OnInit {
               licence: req.licence,
               specialties: req.specialties,
               centers: req.centers,
-              availability_times: req.availability_times.map((r) => {
+              availability_times: Array.isArray(req.availability_times)? req.availability_times.map((r) => {
                 return r.day+': '+r.from_time+' a '+r.to_time
-              }).join('/'),
+              }).join('/'):[],
               available
             }
           });
@@ -184,13 +184,20 @@ export class MedicsComponent implements OnInit {
     this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: event.pageSize, page: event.pageIndex });
 
 
-  }
+  };
 
   submitCreate = (values: any = {}, callback = (res) => { }) => {
     console.log(values)
-    callback({ success: { status: 200, message: 'Los campos fueron insertados' } });
-    //callback({ error: { status: 400, message: 'Los campos fueron insertados' } });
-  }
+    this._doctorsService.PostDoctor(values)
+      .subscribe(data => {
+        callback({ success: { status: 200, message: 'Los campos fueron insertados' } });
+        this.getAllMedics();
+      },
+      err => {
+        console.error(err);
+        callback({error: { status: 400, message: err }});
+      });
+  };
 
   submitEdit = (values: any = {}, callback: Function = (res) => { }) => {
     console.log(values)

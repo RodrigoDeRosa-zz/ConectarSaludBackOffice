@@ -20,7 +20,8 @@ import {Doctor} from '../models/doctor';
 })
 class DoctorsService extends __BaseService {
   static readonly getAllRolesUsingGETPath = '/doctors';
-  static readonly PostRolPath = '/doctors';
+  static readonly PostDoctorPath = '/doctors';
+  static readonly PatchDoctorPath = '/doctors';
 
   constructor(
     config: __Configuration,
@@ -95,7 +96,7 @@ class DoctorsService extends __BaseService {
     __body = doctorDto;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `${DoctorsService.PostRolPath}`,
+      this.rootUrl + `${DoctorsService.PostDoctorPath}`,
       __body,
       {
         headers: __headers,
@@ -121,6 +122,44 @@ class DoctorsService extends __BaseService {
     );
   }
 
+  /**
+   * Edit a doctor
+   * @param doctorDto doctorDto
+   * @return OK
+   */
+  PatchDoctorResponse(params: DoctorsService.EditParams): __Observable<__StrictHttpResponse<Doctor>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = params.doctorDto;
+    let req = new HttpRequest<any>(
+      'PATCH',
+      this.rootUrl + `${DoctorsService.PatchDoctorPath}/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Doctor>;
+      })
+    );
+  }
+  /**
+   * Edit a doctor
+   * @param doctorDto doctorDto
+   * @return OK
+   */
+  PatchDoctor(params: DoctorsService.EditParams): __Observable<Doctor> {
+    return this.PatchDoctorResponse(params).pipe(
+      __map(_r => _r.body as DoctorDto)
+    );
+  }
+
 
 }
 
@@ -134,6 +173,23 @@ module DoctorsService {
     size?: number;
     page?: number;
   }
+
+  /**
+   * Parameters for edit
+   */
+  export interface EditParams {
+
+    /**
+     * id
+     */
+    id: number;
+
+    /**
+     * categoriaPermisoDto
+     */
+    doctorDto: DoctorDto;
+  }
+
 }
 
 export { DoctorsService }

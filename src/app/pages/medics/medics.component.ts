@@ -141,29 +141,30 @@ export class MedicsComponent implements OnInit {
     //this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: 10, page: 0 });
     this._doctorsService.getAllDoctorsUsingGET({})
       .subscribe(data => {
-          this.responseData = data;
-          this.listTab.contentList.data = _.map(this.responseData, function (req) {
-            let available;
-            if (req.is_available) {
-              available = 'SI';
-            } else {
-              available = 'NO';
-            }
+        this.responseData = data;
+        this.listTab.contentList.data = _.map(this.responseData, function (req) {
+          let available;
+          if (req.is_available) {
+            available = 'SI';
+          } else {
+            available = 'NO';
+          }
 
-            return {
-              first_name: req.first_name,
-              last_name: req.last_name,
-              dni: req.dni,
-              email: req.email,
-              licence: req.licence,
-              specialties: req.specialties,
-              centers: req.centers,
-              availability_times: Array.isArray(req.availability_times)? req.availability_times.map((r) => {
-                return r.day+': '+r.from_time+' a '+r.to_time
-              }).join('/'):[],
-              available
-            }
-          });
+          return {
+            id: req.id,
+            first_name: req.first_name,
+            last_name: req.last_name,
+            dni: req.dni,
+            email: req.email,
+            licence: req.licence,
+            specialties: req.specialties,
+            centers: req.centers,
+            availability_times: Array.isArray(req.availability_times)? req.availability_times.map((r) => {
+              return r.day+': '+r.from_time+' a '+r.to_time
+            }).join('/'):[],
+            available
+          }
+        });
       },
       err => {
         console.error(err);
@@ -187,22 +188,28 @@ export class MedicsComponent implements OnInit {
   };
 
   submitCreate = (values: any = {}, callback = (res) => { }) => {
-    console.log(values)
     this._doctorsService.PostDoctor(values)
       .subscribe(data => {
-        callback({ success: { status: 200, message: 'Los campos fueron insertados' } });
+        callback({ success: { status: 200, message: 'Profesional creado correctamente' } });
         this.getAllMedics();
       },
       err => {
         console.error(err);
-        callback({error: { status: 400, message: err }});
+        callback({error: { status: 400, title: "Problema al cargar el profesional", message: "Verifique que el DNI y la matrícula no hayan sido cargados en el sistema" }});
       });
   };
 
   submitEdit = (values: any = {}, callback: Function = (res) => { }) => {
-    console.log(values)
-    callback({ success: { status: 200, message: 'Los campos fueron modificados' } });
-    //callback({ error: { status: 400, message: 'Los campos fueron insertados' } });
+    let id = this.editTab.contentForm.initValues.id;
+    this._doctorsService.PatchDoctor({doctorDto: values,id})
+      .subscribe(data => {
+          callback({ success: { status: 200, message: 'Profesional guardado correctamente' } });
+          this.getAllMedics();
+        },
+        err => {
+          console.error(err);
+          callback({error: { status: 400, title: "Problema al guardar los datos del profesional", message: "Verifique los datos ingresados" }});
+        });
   }
 
 }

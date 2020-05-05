@@ -117,12 +117,10 @@ export class ABMGenericAbmComponent implements OnInit {
 		this.createTab.contentForm.formConfiguration.onSubmit(callObject.values, (res) => {
 			callObject.onSubmitCallback(res);
 			if (res.success) {
-        this._toastr.success(res.success.message, "Operacion exitosa");
+        this._toastr.success(res.success.message, "Operación exitosa");
 				this.goToList();
-			} else {
-			  console.error(res);
-			  this._toastr.error("Verifique que el DNI y la matrícula no hayan sido cargados en el sistema","Problema al cargar el profesional")
-      }
+			}
+			this.handleError(res);
 		})
 	}
 
@@ -135,11 +133,19 @@ export class ABMGenericAbmComponent implements OnInit {
 		this.editTab.contentForm.formConfiguration.onSubmit(callObject.values, (res) => {
 			callObject.onSubmitCallback(res);
 			if (res.success) {
-        this._toastr.success(res.success.message, "Operacion exitosa");
+        this._toastr.success(res.success.message, "Operación exitosa");
 				this.goToList();
 			}
+			this.handleError(res);
 		})
 	}
+
+	private handleError(res){
+    if(res.error) {
+      console.error(res);
+      this._toastr.error(res.error.message,res.error.title)
+    }
+  }
 
 	deleteEdit = (callObject: { values: any, onSubmitCallback: Function } = { values: {}, onSubmitCallback: (res) => { console.warn("onSubmitCallback not defined") } }) => {
 		/* Se define Callback en respuesta al delete del edit */

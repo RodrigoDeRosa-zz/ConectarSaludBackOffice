@@ -54,7 +54,12 @@ export class MedicsComponent implements OnInit {
     },
     {
       name: 'Disponibilidad',
-      key: 'availability_times'
+      key: 'availability_times',
+      formattedTableResult: (values) => {
+        return values.map((values) => {
+          return values.day+' '+values.from_time+' a '+values.to_time;
+        });
+      }
     },
     {
       name: 'Disponible?',
@@ -160,9 +165,7 @@ export class MedicsComponent implements OnInit {
             licence: req.licence,
             specialties: req.specialties,
             centers: req.centers,
-            availability_times: Array.isArray(req.availability_times)? req.availability_times.map((r) => {
-              return r.day+': '+r.from_time+' a '+r.to_time
-            }).join('/'):[],
+            availability_times: req.availability_times,
             available
           }
         });

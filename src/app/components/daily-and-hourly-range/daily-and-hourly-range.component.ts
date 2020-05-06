@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 
@@ -35,7 +35,11 @@ export class DailyAndHourlyRangeComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.dynamicForm.setControl(this.id, this.fb.array([],Validators.required));
+    this.formInitialization();
+  }
+
+  formInitialization() {
+    this.dynamicForm.setControl(this.id, this.fb.array([], Validators.required));
 
     // Uncomment the line below If you want to seed the Form with some data
     this.seedRangesFormArray();
@@ -89,9 +93,11 @@ export class DailyAndHourlyRangeComponent implements OnInit {
     return (<FormArray>this.dynamicForm.get(this.id));
   }
 
-  ngOnDestroy(){
-    for(let i=0;i<this.rangesFormArray.length;i++){
-      this.rangesFormArray.removeAt(i)
+  ngOnChanges(changes: SimpleChanges) {
+    const value = _.get(changes,'dynamicForm.currentValue.controls.availability_times.value');
+    if(value){
+      this.seedData = value;
+      this.formInitialization();
     }
   }
 

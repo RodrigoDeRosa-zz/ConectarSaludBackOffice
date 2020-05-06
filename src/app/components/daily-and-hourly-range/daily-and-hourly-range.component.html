@@ -1,5 +1,5 @@
 <form [formGroup]="dynamicForm">
-  <mat-label>{{title}}</mat-label>
+  <p>{{title}}</p>
   <div [formArrayName]="id">
     <div
       *ngFor="let filter of rangesFormArray.controls; let i = index;">

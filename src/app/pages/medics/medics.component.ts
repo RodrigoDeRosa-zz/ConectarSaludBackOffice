@@ -65,6 +65,20 @@ export class MedicsComponent implements OnInit {
       name: 'Disponible?',
       key: 'available'
     },
+    {
+      name: 'Acciones',
+      key: 'action',
+      isAction: true,
+      actions: [
+        {
+          name: 'delete',
+          icon: 'delete',
+          execute: (value) => {
+            console.log(value);
+          }
+        },
+      ]
+    },
   ];
 
   /**

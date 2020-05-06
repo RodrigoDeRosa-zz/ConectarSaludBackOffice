@@ -1,5 +1,6 @@
 <form [formGroup]="dynamicForm">
-  <div formArrayName="ranges">
+  <mat-label>{{title}}</mat-label>
+  <div [formArrayName]="id">
     <div
       *ngFor="let filter of rangesFormArray.controls; let i = index;">
 
@@ -25,11 +26,11 @@
             (selectionChange)="selected()"
             placeholder="Desde"
             #apiField
-            formControlName="fromTime">
+            formControlName="from_time">
             <mat-option
-              *ngFor="let fromTime of times"
-              [value]="fromTime">
-              {{ fromTime }}
+              *ngFor="let from_time of times"
+              [value]="from_time">
+              {{ from_time }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -38,11 +39,11 @@
           <mat-select
             (selectionChange)="selected()"
             placeholder="Hasta"
-            formControlName="toTime">
+            formControlName="to_time">
             <mat-option
-              *ngFor="let toTime of times"
-              [value]="toTime">
-              {{ toTime }}
+              *ngFor="let to_time of times"
+              [value]="to_time">
+              {{ to_time }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -62,15 +63,6 @@
       type="button"
       (click)="addFilterToRangesFormArray()">
       Agregar rango
-    </button>
-
-    <button
-      class="save"
-      mat-stroked-button
-      color="primary"
-      [disabled]="dynamicForm.invalid || rangesFormArray.controls.length < 1"
-      (click)="save()">
-      Guardar
     </button>
 
   </div>

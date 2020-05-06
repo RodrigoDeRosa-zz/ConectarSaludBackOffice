@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-daily-and-hourly-range',
+  selector: 'daily-and-hourly-range',
   templateUrl: './daily-and-hourly-range.component.html',
   styleUrls: ['./daily-and-hourly-range.component.css']
 })
@@ -24,20 +24,18 @@ export class DailyAndHourlyRangeComponent implements OnInit {
     return [h+':00',h+':30']
   });
 
-  seedData = [
-    { day: 'LUNES', fromTime: '10:00', toTime: '17:00' },
-    { day: 'MARTES', fromTime: '10:00', toTime: '17:00' },
-    { day: 'MIERCOLES', fromTime: '10:00', toTime: '17:00' },
-  ];
+  seedData = [];
 
-  dynamicForm: FormGroup;
+  @Input() id: string;
+  @Input() title: string;
+
+  @Input() dynamicForm: FormGroup;
+  @Output() dynamicFormChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.dynamicForm = this.fb.group({
-      ranges: this.fb.array([])
-    });
+    this.dynamicForm.setControl(this.id, this.fb.array([],Validators.required));
 
     // Uncomment the line below If you want to seed the Form with some data
     this.seedRangesFormArray();
@@ -53,9 +51,9 @@ export class DailyAndHourlyRangeComponent implements OnInit {
 
   createFilterGroup() {
     return this.fb.group({
-      day: [],
-      fromTime: [],
-      toTime: [],
+      day: ['LUNES'],
+      from_time: ['09:00'],
+      to_time: ['17:00'],
     });
   }
 
@@ -82,15 +80,19 @@ export class DailyAndHourlyRangeComponent implements OnInit {
   */
 
   selected(){
-    console.log(this.dynamicForm.value);
-  }
-
-  save() {
-    console.log(this.dynamicForm.value);
+    this.dynamicForm.valueChanges.subscribe(value=>{
+      this.dynamicFormChange.emit(this.dynamicForm);
+    })
   }
 
   get rangesFormArray() {
-    return (<FormArray>this.dynamicForm.get('ranges'));
+    return (<FormArray>this.dynamicForm.get(this.id));
+  }
+
+  ngOnDestroy(){
+    for(let i=0;i<this.rangesFormArray.length;i++){
+      this.rangesFormArray.removeAt(i)
+    }
   }
 
 }

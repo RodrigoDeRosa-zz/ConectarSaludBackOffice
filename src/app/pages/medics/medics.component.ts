@@ -118,15 +118,16 @@ export class MedicsComponent implements OnInit {
       new ABMGenericFormField({ name: 'first_name', value: '', title: 'Nombre', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'last_name', value: '', title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'dni', value: '', title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
-      new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required, Validators.email], size: 'span-3' }),
       new ABMGenericFormField({ name: 'licence', value: '', title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
         multi: true, lookups: [{ value: 'Clinic', key: 'Clinic' }, { value: 'Pediatric', key: 'Pediatric' }]
       }),
-      new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6' ,
+      new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6',
         multi: true, lookups: [{ value: 'Hospital', key: 'Hospital San Jose' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]
       }),
-      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      //new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Configuracion de disponibilidad', type: 'daily-and-hourly-range', validators: [Validators.required], size: 'span-6' })
     ];
 
     this.editTab.contentForm.data = _.cloneDeep(this.createTab.contentForm.data);

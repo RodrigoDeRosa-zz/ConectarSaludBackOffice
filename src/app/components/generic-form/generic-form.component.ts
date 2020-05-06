@@ -201,7 +201,7 @@ export class ABMGenericFormComponent implements OnInit {
         return;
       }
 
-      this.genericForm.get(element.name).setErrors(null);;
+      this.genericForm.get(element.name).setErrors(null);
 
     });
     this.genericForm.reset();
@@ -209,4 +209,8 @@ export class ABMGenericFormComponent implements OnInit {
   }
 
 
+  dynamicFormChange($event: any) {
+    this.genericForm = $event;
+
+  }
 }

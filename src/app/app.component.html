@@ -1,7 +1,9 @@
 <header>
   <mat-toolbar color = "primary">
     <span class = "gap">Conectar Salud</span>
-    <button mat-button>MEDICOS</button>
+    <ng-container *ngFor="let button of buttons">
+      <a [href]="button.href" mat-button>{{button.title}}</a>
+    </ng-container>
     <span class = "filler"></span>
     <span>Administrativo</span>
   </mat-toolbar>

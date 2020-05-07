@@ -24,7 +24,7 @@ export class DailyAndHourlyRangeComponent implements OnInit {
     return [h+':00',h+':30']
   });
 
-  seedData = [];
+  seedData: any = [];
 
   @Input() id: string;
   @Input() title: string;

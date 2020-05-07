@@ -16,6 +16,20 @@ import {DoctorsService} from '../../services/doctors.service';
 })
 export class MedicsComponent implements OnInit {
 
+  private title = "Cuerpo Médico";
+  private subtitle = "Gestión el cuerpo médico del sistema";
+
+  private loadingErrorMedicsTitle = "Problema al listar el cuerpo médico";
+  private loadingErrorMedicsMessage = "Refresque el sitio y vuelva a intentarlo.";
+
+  private creatingMedicsOk = 'Profesional creado correctamente';
+  private creatingErrorMedicsTitle = "Problema al cargar el profesional";
+  private creatingErrorMedicsMessage = "Verifique que el DNI y la matrícula no hayan sido cargados en el sistema";
+
+  private updatingMedicsOk = 'Profesional guardado correctamente';
+  private updatingErrorMedicsTitle = "Problema al guardar los datos del profesional";
+  private updatingErrorMedicsMessage = "Verifique los datos ingresados";
+
   listTab: FormTab = new FormTab('list');
   createTab: FormTab = new FormTab('form');
   editTab: FormTab;
@@ -146,15 +160,16 @@ export class MedicsComponent implements OnInit {
       new ABMGenericFormField({ name: 'last_name', value: '', title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'dni', value: '', title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
       new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required, Validators.email], size: 'span-3' }),
-      new ABMGenericFormField({ name: 'licence', value: '', title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'licence', value: '', title: 'Matrícula', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
-        multi: true, lookups: [{ value: 'Clinic', key: 'Clinic' }, { value: 'Pediatric', key: 'Pediatric' }]
+        multi: true, lookups: [{ value: 'Clinica', key: 'Clinica' }, { value: 'Pediatría', key: 'Pediatría' }]
       }),
       new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6',
-        multi: true, lookups: [{ value: 'Hospital', key: 'Hospital San Jose' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]
+        multi: true, lookups: [{ value: 'Hospital San José', key: 'Hospital San José' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]
       }),
       //new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
-      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Configuracion de disponibilidad', type: 'daily-and-hourly-range', validators: [Validators.required], size: 'span-6' })
+      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Configuración de disponibilidad', type: 'daily-and-hourly-range', validators: [Validators.required],
+        size: 'span-6' })
     ];
 
     this.editTab.contentForm.data = _.cloneDeep(this.createTab.contentForm.data);
@@ -194,7 +209,7 @@ export class MedicsComponent implements OnInit {
       },
       err => {
         console.error(err);
-        this._toastr.error("Refresque el sitio y vuelva a intentarlo.","Problema al listar medicos")
+        this._toastr.error(this.loadingErrorMedicsMessage,this.loadingErrorMedicsTitle)
       });
 
     /*this.listTab.contentList.pagination = {
@@ -216,12 +231,12 @@ export class MedicsComponent implements OnInit {
   submitCreate = (values: any = {}, callback = (res) => { }) => {
     this._doctorsService.PostDoctor(values)
       .subscribe(data => {
-        callback({ success: { status: 200, message: 'Profesional creado correctamente' } });
+        callback({ success: { status: 200, message: this.creatingMedicsOk } });
         this.getAllMedics();
       },
       err => {
         console.error(err);
-        callback({error: { status: 400, title: "Problema al cargar el profesional", message: "Verifique que el DNI y la matrícula no hayan sido cargados en el sistema" }});
+        callback({error: { status: 400, title: this.creatingErrorMedicsTitle, message: this.creatingErrorMedicsMessage }});
       });
   };
 
@@ -229,12 +244,12 @@ export class MedicsComponent implements OnInit {
     let id = this.editTab.contentForm.initValues.id;
     this._doctorsService.PatchDoctor({doctorDto: values,id})
       .subscribe(data => {
-          callback({ success: { status: 200, message: 'Profesional guardado correctamente' } });
+          callback({ success: { status: 200, message: this.updatingMedicsOk } });
           this.getAllMedics();
         },
         err => {
           console.error(err);
-          callback({error: { status: 400, title: "Problema al guardar los datos del profesional", message: "Verifique los datos ingresados" }});
+          callback({error: { status: 400, title: this.updatingErrorMedicsTitle, message: this.updatingErrorMedicsMessage }});
         });
   }
 

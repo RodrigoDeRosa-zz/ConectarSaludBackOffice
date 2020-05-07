@@ -22,6 +22,7 @@ class DoctorsService extends __BaseService {
   static readonly getAllRolesUsingGETPath = '/doctors';
   static readonly PostDoctorPath = '/doctors';
   static readonly PatchDoctorPath = '/doctors';
+  static readonly DeleteDoctorPath = '/doctors';
 
   constructor(
     config: __Configuration,
@@ -156,6 +157,43 @@ class DoctorsService extends __BaseService {
    */
   PatchDoctor(params: DoctorsService.EditParams): __Observable<Doctor> {
     return this.PatchDoctorResponse(params).pipe(
+      __map(_r => _r.body as DoctorDto)
+    );
+  }
+
+  /**
+   * Delete a doctor
+   * @param id doctor id
+   * @return OK
+   */
+  DeleteDoctorResponse(id: string): __Observable<__StrictHttpResponse<Doctor>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `${DoctorsService.DeleteDoctorPath}/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Doctor>;
+      })
+    );
+  }
+  /**
+   * Delete a doctor
+   * @param id doctor id
+   * @return OK
+   */
+  DeleteDoctor(id: string): __Observable<Doctor> {
+    return this.DeleteDoctorResponse(id).pipe(
       __map(_r => _r.body as DoctorDto)
     );
   }

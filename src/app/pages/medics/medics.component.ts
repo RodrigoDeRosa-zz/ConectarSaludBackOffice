@@ -74,7 +74,15 @@ export class MedicsComponent implements OnInit {
           name: 'delete',
           icon: 'delete',
           execute: (value) => {
-            console.log(value);
+            this._doctorsService.DeleteDoctor(value.id)
+              .subscribe(data => {
+                  //callback({ success: { status: 200, message: 'Profesional creado correctamente' } });
+                  this.getAllMedics();
+                },
+                err => {
+                  console.error(err);
+                  //callback({error: { status: 400, title: "Problema al cargar el profesional", message: "Verifique que el DNI y la matrícula no hayan sido cargados en el sistema" }});
+                });
           }
         },
       ]

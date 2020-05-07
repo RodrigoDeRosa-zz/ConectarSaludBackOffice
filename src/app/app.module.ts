@@ -16,14 +16,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppConfigService } from'./providers/app-config.service';
+
+import { CustomMatPaginator } from './classes/custom-mat-paginator';
 
 import { ABMGenericAbmComponent } from './components/generic-abm/generic-abm.component';
 import { ABMGenericFormComponent } from './components/generic-form/generic-form.component';
@@ -76,6 +78,10 @@ export function initConfig(appConfig: AppConfigService) {
       useFactory: initConfig,
       deps: [ AppConfigService ],
       multi: true
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginator
     }
   ],
   bootstrap: [

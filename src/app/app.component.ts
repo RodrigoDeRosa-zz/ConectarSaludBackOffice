@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ConectarSaludBackOffice';
+
+  buttons = [
+    {
+      title: 'CUERPO MÉDICO',
+      href: '/medics'
+    }
+  ]
 }

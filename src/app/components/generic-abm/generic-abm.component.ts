@@ -69,18 +69,27 @@ export class ABMGenericAbmComponent implements OnInit {
 		}
 
 		// inserto el boton de editar en las columnas
-		this.listTab.contentList.columns.push({
-			name: 'Acciones',
-			key: 'action',
-			isAction: true,
-			actions: [
-				{
-					name: 'Editar',
-					icon: 'edit',
-					execute: this.toEdit.bind(this)
-				}
-			]
-		});
+    const actionColumnIdx = _.findIndex(this.listTab.contentList.columns,(column) => {
+      return column.isAction;
+    });
+		const editAction = {
+      name: 'Editar',
+      icon: 'edit',
+      execute: this.toEdit.bind(this)
+    };
+    if(actionColumnIdx){
+      this.listTab.contentList.columns[actionColumnIdx].actions.push(editAction);
+    } else{
+      this.listTab.contentList.columns.push({
+        name: 'Acciones',
+        key: 'action',
+        isAction: true,
+        actions: [
+          editAction
+        ]
+      });
+    }
+
 
 		// buttons creation
 		this.createTab.contentForm.data.push({ name: 'cancel', title: 'Cancelar', type: 'button', execute: this.cancelCreate, size: 'span-1', offsetLeft: 'span-10' });

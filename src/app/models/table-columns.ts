@@ -8,4 +8,5 @@ export class TableColumns {
   type?: ABMGenericFormField;
   notShow?: boolean;
   filtrable?: boolean;
+  formattedTableResult?: Function;
 }

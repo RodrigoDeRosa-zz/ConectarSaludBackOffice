@@ -54,11 +54,38 @@ export class MedicsComponent implements OnInit {
     },
     {
       name: 'Disponibilidad',
-      key: 'availability_times'
+      key: 'availability_times',
+      formattedTableResult: (values) => {
+        return values.map((values) => {
+          return values.day+' '+values.from_time+' a '+values.to_time;
+        });
+      }
     },
     {
       name: 'Disponible?',
       key: 'available'
+    },
+    {
+      name: 'Acciones',
+      key: 'action',
+      isAction: true,
+      actions: [
+        {
+          name: 'delete',
+          icon: 'delete',
+          execute: (value) => {
+            this._doctorsService.DeleteDoctor(value.id)
+              .subscribe(data => {
+                  //callback({ success: { status: 200, message: 'Profesional creado correctamente' } });
+                  this.getAllMedics();
+                },
+                err => {
+                  console.error(err);
+                  //callback({error: { status: 400, title: "Problema al cargar el profesional", message: "Verifique que el DNI y la matrícula no hayan sido cargados en el sistema" }});
+                });
+          }
+        },
+      ]
     },
   ];
 
@@ -118,15 +145,16 @@ export class MedicsComponent implements OnInit {
       new ABMGenericFormField({ name: 'first_name', value: '', title: 'Nombre', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'last_name', value: '', title: 'Apellido', type: 'text', validators: [Validators.required], size: 'span-3' }),
       new ABMGenericFormField({ name: 'dni', value: '', title: 'DNI', type: 'text', validators: [Validators.required], size: 'span-3', disabled: false }),
-      new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required], size: 'span-3' }),
+      new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required, Validators.email], size: 'span-3' }),
       new ABMGenericFormField({ name: 'licence', value: '', title: 'Matricula', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
         multi: true, lookups: [{ value: 'Clinic', key: 'Clinic' }, { value: 'Pediatric', key: 'Pediatric' }]
       }),
-      new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6' ,
+      new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6',
         multi: true, lookups: [{ value: 'Hospital', key: 'Hospital San Jose' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]
       }),
-      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      //new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Disponibilidad', type: 'text', validators: [Validators.required], size: 'span-6' }),
+      new ABMGenericFormField({ name: 'availability_times', value: '', title: 'Configuracion de disponibilidad', type: 'daily-and-hourly-range', validators: [Validators.required], size: 'span-6' })
     ];
 
     this.editTab.contentForm.data = _.cloneDeep(this.createTab.contentForm.data);
@@ -159,9 +187,7 @@ export class MedicsComponent implements OnInit {
             licence: req.licence,
             specialties: req.specialties,
             centers: req.centers,
-            availability_times: Array.isArray(req.availability_times)? req.availability_times.map((r) => {
-              return r.day+': '+r.from_time+' a '+r.to_time
-            }).join('/'):[],
+            availability_times: req.availability_times,
             available
           }
         });

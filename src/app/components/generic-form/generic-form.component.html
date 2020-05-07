@@ -50,6 +50,13 @@
 						<mat-datepicker #picker></mat-datepicker>
 					</mat-form-field>
 
+          <!-- DAILY AND HORLY RANGE -->
+          <daily-and-hourly-range *ngIf="field.type == 'daily-and-hourly-range'"
+            [id]="field.name"
+            [title]="field.title"
+            [dynamicForm]="genericForm"
+            (dynamicFormChange)="dynamicFormChange($event)"></daily-and-hourly-range>
+
 					<div *ngIf="false">
 						<span class="glyphicon glyphicon-remove form-control-feedback fix-error-icon"></span>
 						<div class="error-msg">
@@ -82,7 +89,7 @@
 					<button mat-button type="button" color="{{field.color? 'field.color':'primary'}}" [disabled]="field.disabled" (click)="field.execute($event,getFormValues())">{{field.title}}</button>
 				</div>
 
-				<div *ngIf="field.offsetRight" class="mdc-layout-grid__cell--{{field.offsetLeft}}">
+				<div *ngIf="field.offsetRight" class="mdc-layout-grid__cell--{{field.offsetRight}}">
 				</div>
 
 			</ng-template>

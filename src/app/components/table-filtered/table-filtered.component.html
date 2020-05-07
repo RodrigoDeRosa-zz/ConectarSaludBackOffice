@@ -10,7 +10,7 @@
           -->
         	<ng-container *ngIf="!item.isAction" matColumnDef="{{item.key}}">
 	          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item.name}} </th>
-            <td mat-cell *matCellDef="let element"> {{lodash.get(element,item.key)}} </td>
+            <td mat-cell *matCellDef="let element"> {{item.formattedTableResult? item.formattedTableResult(lodash.get(element,item.key)):lodash.get(element,item.key)}} </td>
 	        </ng-container>
           <!--
             Render column action

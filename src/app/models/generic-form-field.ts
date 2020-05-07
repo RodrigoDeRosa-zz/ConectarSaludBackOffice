@@ -9,7 +9,7 @@ export class ABMGenericFormField {
   title: string; //label
 
   name: string; //correspondiente al identificador y al fiel de los values
-  type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'button' | 'delete';
+  type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'button' | 'delete' | 'daily-and-hourly-range';
 
   /**
    *Setters and getters para configurar las maneras de obtener los value de los diferentes tipos de campos
@@ -97,7 +97,7 @@ export class ABMGenericFormField {
   constructor(option: {
     title: string,
     name: string,
-    type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'button',
+    type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'button' | 'daily-and-hourly-range',
     value: any,
     offsetLeft?: string,
     size?: string, //span-6: tamaño de grilla en material
@@ -126,7 +126,7 @@ export class ABMGenericFormField {
     this.type = option.type;
     this.offsetLeft = option.offsetLeft;
     this.size = option.size;
-    this.offsetRight = option.offsetLeft;
+    this.offsetRight = option.offsetRight;
     this.hidden = option.hidden;
     this.disabled = option.disabled;
     this.validators = option.validators;

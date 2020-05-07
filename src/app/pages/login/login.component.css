@@ -1,0 +1,21 @@
+.login-container{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 30px;
+  max-width: 300px;
+}
+
+.login-title{
+  margin-bottom: 10px;
+}
+
+.login-body{
+  display: flex;
+  flex-direction: column;
+}
+
+.login-error{
+  margin-top: 10px;
+  color: #dc3545;
+}

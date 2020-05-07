@@ -1,0 +1,31 @@
+<div class="mat-card login-container">
+  <div class="mat-card-header">
+    <div class="mat-card-title login-title">Ingreso</div>
+    <div class="mat-card-subtitle login-title">Por favor ingrese su DNI y contraseña</div>
+  </div>
+
+  <form class="mat-card-body login-body" validate [formGroup]="loginForm" (ngSubmit)="submit($event)" >
+
+    <!-- INPUT -->
+    <mat-form-field>
+      <input matInput class="form-control" id="dni" placeholder="DNI" formControlName="dni">
+    </mat-form-field>
+
+    <!-- INPUT -->
+    <mat-form-field>
+      <input matInput type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password">
+    </mat-form-field>
+
+    <!-- SUBMIT BUTTON -->
+    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid || loading">
+      Ingresar
+      <mat-icon *ngIf="loading">
+        <mat-spinner diameter="20"></mat-spinner>
+      </mat-icon>
+    </button>
+
+    <label *ngIf="wrongPassword" class="login-error">DNI o contraseña incorrectos, intente nuevamente</label>
+
+  </form>
+
+</div>

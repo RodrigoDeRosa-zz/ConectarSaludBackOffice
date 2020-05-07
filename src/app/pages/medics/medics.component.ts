@@ -144,6 +144,8 @@ export class MedicsComponent implements OnInit {
     size: 10,
     totalRecords: 2
   }
+  private page = 0;
+  private unpaginatedData: any[];
 
   constructor(private _toastr: ToastrService,
               private _doctorsService: DoctorsService) {}
@@ -185,7 +187,7 @@ export class MedicsComponent implements OnInit {
     this._doctorsService.getAllDoctorsUsingGET({})
       .subscribe(data => {
         this.responseData = data;
-        this.listTab.contentList.data = _.map(this.responseData, function (req) {
+        this.unpaginatedData = _.map(this.responseData, function (req) {
           let available;
           if (req.is_available) {
             available = 'SI';
@@ -206,6 +208,13 @@ export class MedicsComponent implements OnInit {
             available
           }
         });
+        //TODO: delete this when pagination comes from server
+        this.listTab.contentList.pagination = {
+          page: this.page,
+          size: 10,
+          totalRecords: this.unpaginatedData.length
+        };
+        this.paginate(this.listTab.contentList.pagination.size, this.listTab.contentList.pagination.page);
       },
       err => {
         console.error(err);
@@ -223,10 +232,14 @@ export class MedicsComponent implements OnInit {
   }
 
   changePage = (event) => {
-    this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: event.pageSize, page: event.pageIndex });
-
-
+    //this.filters = Object.assign(this.filters, this.pagination, { sort: 'apellido', size: event.pageSize, page: event.pageIndex });
+    this.listTab.contentList.pagination.page = event.pageIndex;
+    this.paginate(this.listTab.contentList.pagination.size, this.listTab.contentList.pagination.page);
   };
+
+  private paginate(page_size, page_number) {
+    this.listTab.contentList.data = this.unpaginatedData.slice(page_number * page_size, (page_number+1) * page_size);
+  }
 
   submitCreate = (values: any = {}, callback = (res) => { }) => {
     this._doctorsService.PostDoctor(values)

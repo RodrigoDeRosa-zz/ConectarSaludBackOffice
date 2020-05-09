@@ -7,12 +7,13 @@
   <form class="mat-card-body login-body" validate [formGroup]="loginForm" (ngSubmit)="submit($event)" >
 
     <!-- INPUT -->
-    <mat-form-field>
+    <mat-form-field class="login-input">
       <input matInput class="form-control" id="dni" placeholder="DNI" formControlName="dni">
+      <mat-error *ngIf="dni.invalid">El DNI debe ser de tipo numérico</mat-error>
     </mat-form-field>
 
     <!-- INPUT -->
-    <mat-form-field>
+    <mat-form-field class="login-input">
       <input matInput type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password">
     </mat-form-field>
 

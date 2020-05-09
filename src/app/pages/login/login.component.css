@@ -11,6 +11,7 @@
 }
 
 .login-body{
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -18,4 +19,8 @@
 .login-error{
   margin-top: 10px;
   color: #dc3545;
+}
+
+.login-input{
+  margin-bottom: 10px;
 }

@@ -164,7 +164,7 @@ export class MedicsComponent implements OnInit {
       new ABMGenericFormField({ name: 'email', value: '', title: 'Correo electrónico', type: 'text', validators: [Validators.required, Validators.email], size: 'span-3' }),
       new ABMGenericFormField({ name: 'licence', value: '', title: 'Matrícula', type: 'text', validators: [Validators.required], size: 'span-6' }),
       new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', validators: [Validators.required], size: 'span-6',
-        multi: true, lookups: [{ value: 'Clinica', key: 'Clinica' }, { value: 'Pediatría', key: 'Pediatría' }]
+        multi: true, lookups: [{ value: 'Clínica', key: 'Clínica' }, { value: 'Pediatría', key: 'Pediatría' }]
       }),
       new ABMGenericFormField({ name: 'centers', value: '', title: 'Centros de salud', type: 'select', validators: [Validators.required], size: 'span-6',
         multi: true, lookups: [{ value: 'Hospital San José', key: 'Hospital San José' }, { value: 'Hospital Hornos', key: 'Hospital Hornos' }]

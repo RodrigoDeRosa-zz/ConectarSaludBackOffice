@@ -15,6 +15,7 @@
     <!-- INPUT -->
     <mat-form-field class="login-input">
       <input matInput type="password" class="form-control" id="password" placeholder="Contraseña" formControlName="password">
+      <mat-error *ngIf="dni.invalid">La contraseña debe ser menor a 30 caracteres</mat-error>
     </mat-form-field>
 
     <!-- SUBMIT BUTTON -->

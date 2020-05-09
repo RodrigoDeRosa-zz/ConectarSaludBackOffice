@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   loginForm:FormGroup;
   dni: FormControl =  new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]);
-  password: FormControl =  new FormControl('', [Validators.required, Validators.max(30)]);
+  password: FormControl =  new FormControl('', [Validators.required, Validators.maxLength(30)]);
   loading = false;
   wrongPassword = false;
 

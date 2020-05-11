@@ -4,6 +4,7 @@ const app = express();
 
 // Serve static files....
 app.use(express.static(__dirname + '/dist/ConectarSaludBackOffice'));
+app.use(express.static(__dirname + '/dist/ConectarSaludBackOffice/assets'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {

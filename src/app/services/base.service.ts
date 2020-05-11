@@ -42,7 +42,7 @@ export class BaseService {
    * service, will fallback to ApiConfiguration.rootUrl.
    */
   get rootUrl(): string {
-    return process.env.URL_BACK || this.config.getRootUrl();
+    return this._rootUrl || this.config.getRootUrl();
   }
 
   /**

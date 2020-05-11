@@ -16,6 +16,7 @@ export class AppConfigService {
     return this.http.get('./assets/config/config.json')
       .toPromise()
       .then((data: any) => {
+        console.info(data);
         this.config = data;
         this.rootUrl = data["urlBack"];
         console.log("Configuration loaded!");

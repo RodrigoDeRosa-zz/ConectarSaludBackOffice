@@ -17,7 +17,6 @@ export class RoleGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     } else if (expectedRole !== actualRole.role){
-      console.log(actualRole)
       this.toastr.error("El usuario ingresado no tiene permisos para acceder, por favor intente con otro",
         "Usuario No Autorizado")
       this.router.navigate(['/login']);

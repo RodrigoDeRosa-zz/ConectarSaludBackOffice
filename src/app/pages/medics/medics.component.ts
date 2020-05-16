@@ -16,8 +16,8 @@ import {DoctorsService} from '../../services/doctors.service';
 })
 export class MedicsComponent implements OnInit {
 
-  private title = "Cuerpo Médico";
-  private subtitle = "Gestión el cuerpo médico del sistema";
+  title = "Cuerpo Médico";
+  subtitle = "Gestión el cuerpo médico del sistema";
 
   private loadingErrorMedicsTitle = "Problema al listar el cuerpo médico";
   private loadingErrorMedicsMessage = "Refresque el sitio y vuelva a intentarlo.";

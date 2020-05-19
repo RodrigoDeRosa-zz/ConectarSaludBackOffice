@@ -11,7 +11,11 @@ export class AppComponent {
   buttons = [
     {
       title: 'CUERPO MÉDICO',
-      href: '/medics'
+      href: 'admin/medicos'
+    },
+    {
+      title: 'CONSULTAS',
+      href: 'medic/consultas'
     }
   ]
 }

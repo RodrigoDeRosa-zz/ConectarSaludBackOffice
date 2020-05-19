@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MedicConsultationsComponent implements OnInit {
 
+  title = "Consultas Médicas";
+  nameAndLastname = "Nombre y apellido: Juan Perez";
+  license = "M.N.: AVC123";
+  speciality = "Especialidad: Clínica";
+
+  getConsultationButtonText = "Obtener Consulta";
+
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  getConsultationId() {
+    console.log("generate consultation id and redirect")
+  }
 }

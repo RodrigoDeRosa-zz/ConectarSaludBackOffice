@@ -11,14 +11,11 @@ export class SessionService {
   constructor() { }
 
   createUserOnSession(data): __Observable<any[]> {
-    var date=new Date()
+    let date=new Date();
     const user = {
-      'token': data.token,
-      'cuil': data.cuil,
-      'roles': data.roles,
-      'lastClick':  new Date().getTime(),
-      'nombre': data.nombre,
-      'apellido': data.apellido
+      'dni': data.dni,
+      'role': data.role,
+      'lastClick':  new Date().getTime()
 
     };
     this.saveOnSession(SessionService.USER_KEY, user);

@@ -13,7 +13,7 @@ const routes: Routes = [
       expectedRole: 'admin'
     }
   },
-  { path: 'medic/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
+  { path: 'medico/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
     data: {
       expectedRole: 'admin'
     }

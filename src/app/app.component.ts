@@ -15,7 +15,7 @@ export class AppComponent {
     },
     {
       title: 'CONSULTAS',
-      href: 'medic/consultas'
+      href: 'medico/consultas'
     }
   ]
 }

@@ -36,6 +36,7 @@ import { MedicsComponent } from './pages/medics/medics.component';
 import { DailyAndHourlyRangeComponent } from './components/daily-and-hourly-range/daily-and-hourly-range.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MedicConsultationsComponent } from './pages/medic-consultations/medic-consultations.component';
+import { PescriptionAndIndicationComponent } from './pages/pescription-and-indication/pescription-and-indication.component';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadConfig();
@@ -51,7 +52,8 @@ export function initConfig(appConfig: AppConfigService) {
     TableFilteredComponent,
     DailyAndHourlyRangeComponent,
     LoginComponent,
-    MedicConsultationsComponent
+    MedicConsultationsComponent,
+    PescriptionAndIndicationComponent
   ],
   imports: [
     BrowserModule,

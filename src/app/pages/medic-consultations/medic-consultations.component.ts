@@ -34,7 +34,7 @@ export class MedicConsultationsComponent implements OnInit {
       .subscribe(data => {
           console.log(data);
           console.log('generate consultation id and redirect d3b3e0df-7723-4766-ba82-24beea4899fa');
-          this._router.navigate(['/admin/medicos']);
+          this._router.navigate(['/admin/medicos/:id/receta-indicaciones',data.consultation_id]);
         },
         err => {
           console.error(err);

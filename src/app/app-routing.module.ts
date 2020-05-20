@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import {RoleGuard} from './services/role.guard';
+
 import { MedicsComponent } from './pages/medics/medics.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MedicConsultationsComponent } from './pages/medic-consultations/medic-consultations.component';
-import {RoleGuard} from './services/role.guard';
+import { PescriptionAndIndicationComponent } from './pages/pescription-and-indication/pescription-and-indication.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,6 +16,11 @@ const routes: Routes = [
     }
   },
   { path: 'medico/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
+    data: {
+      expectedRole: 'admin'
+    }
+  },
+  { path: 'medico/consultas/:id/receta-indicaciones', component: PescriptionAndIndicationComponent, canActivate: [RoleGuard],
     data: {
       expectedRole: 'admin'
     }

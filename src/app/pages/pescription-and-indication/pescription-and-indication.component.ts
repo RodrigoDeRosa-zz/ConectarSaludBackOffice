@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MatCheckboxChange} from '@angular/material/checkbox';
+import {DoctorsService} from '../../services/doctors.service';
+import {RequestPrescriptionAndConsultationDto} from '../../models/request-prescription-and-consultation-dto';
+import {ToastrService} from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-pescription-and-indication',
@@ -27,23 +31,32 @@ export class PescriptionAndIndicationComponent implements OnInit {
   indicationsLabelText = 'Indicaciones para el paciente';
   finishButtonText = 'Finalizar Consulta';
 
+  private savingSuccessPrescriptionMessage = 'Receta e indicaciones cargadas correctamente';
+  private savingErrorPrescriptionMessage = 'Vuelva a intentarlo nuevamente';
+  private savingSuccessPrescriptionTitle = 'Consulta finalizada';
+  private savingErrorPrescriptionTitle = 'Problema al guardar las recetas e indicaciones';
+
   show = {
     indications: true,
     prescription: true
   };
 
-  data: {
-    prescription: string,
-    indications: string
-  };
+  data: RequestPrescriptionAndConsultationDto;
 
-  constructor() { }
+  private consultationId: string;
+
+  constructor(private _doctorsService: DoctorsService,
+              private _toastr: ToastrService,
+              private _route: ActivatedRoute,
+              private _router: Router) { }
 
   ngOnInit() {
+    this.consultationId = this._route.snapshot.paramMap.get('id');
     this.data = {
       prescription: '',
       indications: ''
     }
+
   }
 
   dontApply($event: MatCheckboxChange, type: string) {
@@ -54,6 +67,14 @@ export class PescriptionAndIndicationComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.data);
+    this._doctorsService.PatchPrescription({doctor_id: '123', consultation_id: this.consultationId, prescriptionAndConsultationDto: this.data})
+      .subscribe(data => {
+          this._toastr.error(this.savingSuccessPrescriptionMessage,this.savingSuccessPrescriptionTitle);
+          this._router.navigate(['/admin/medicos/consultas']);
+        },
+        err => {
+          console.error(err);
+          this._toastr.error(this.savingErrorPrescriptionMessage,this.savingErrorPrescriptionTitle);
+        });
   }
 }

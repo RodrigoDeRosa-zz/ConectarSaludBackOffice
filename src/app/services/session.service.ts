@@ -13,10 +13,13 @@ export class SessionService {
   createUserOnSession(data): __Observable<any[]> {
     let date=new Date();
     const user = {
+      'id': data.id,
       'dni': data.dni,
       'role': data.role,
-      'lastClick':  new Date().getTime()
-
+      'first_name': data.first_name,
+      'last_name': data.last_name,
+      'licence': data.licence,
+      'specialties': data.specialties
     };
     this.saveOnSession(SessionService.USER_KEY, user);
     return this.getFromSession(SessionService.USER_KEY);

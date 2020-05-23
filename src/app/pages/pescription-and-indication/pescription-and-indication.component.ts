@@ -12,7 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class PescriptionAndIndicationComponent implements OnInit {
 
-  title = 'Ingrese a la aplicacion para unirse a la videollamada';
+  title = 'Ingrese a la aplicación para unirse a la videollamada con:';
   prescriptionTitleText = 'Receta';
   dontApplyText = 'No aplica';
   medicTitleText = 'Atendido por';
@@ -20,7 +20,7 @@ export class PescriptionAndIndicationComponent implements OnInit {
   licenseText = 'M.N:';
   specialitiesText = 'Especialidades:';
   patientText = 'Ficha del Paciente';
-  dateText = 'Fecha:';
+  dateText = 'Fecha Generada:';
   planText = 'Plan:';
   planNumberText = 'Afiliado N°:';
   prescriptionPlaceholder = 'Tafirol 400 mg x 12';
@@ -51,7 +51,10 @@ export class PescriptionAndIndicationComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit() {
+    // mandatory params
     this.consultationId = this._route.snapshot.paramMap.get('id');
+    // extra params
+    console.log(this._route.snapshot.paramMap.get('other'));
     this.data = {
       prescription: '',
       indications: ''

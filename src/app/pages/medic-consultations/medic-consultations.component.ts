@@ -29,15 +29,19 @@ export class MedicConsultationsComponent implements OnInit {
               private _session: SessionService) { }
 
   ngOnInit() {
+    const user = this._session.getUserFromSession();
+    this.nameAndLastname = `Nombre y apellido: ${user.first_name} ${user.last_name}`;
+    this.license = `M.N.: ${user.licence}`;
+    this.speciality = `Especialidad: ${user.specialties}`;
   }
 
   getConsultationId() {
     const user = this._session.getUserFromSession();
-    this._consultationsService.getConsultationGET({doctor: 'algo'})
+    this._consultationsService.getConsultationGET({doctor: user.id})
       .subscribe(data => {
           console.log(data);
           console.log('generate consultation id and redirect d3b3e0df-7723-4766-ba82-24beea4899fa');
-          this._router.navigate([`/medico/consultas/${data.consultation_id}/receta-indicaciones`,data.consultation_id]);
+          this._router.navigate([`/medico/consultas/${data.consultation_id}/receta-indicaciones`]);
         },
         err => {
           console.error(err);

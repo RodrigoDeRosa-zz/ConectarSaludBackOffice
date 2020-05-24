@@ -15,9 +15,9 @@
               <mat-card-subtitle><b>{{dateText}}</b> 15-05-2020</mat-card-subtitle>
               <mat-card-header class="prescription-header">
                 <mat-card-title>{{patientText}}</mat-card-title>
-                <mat-card-subtitle><b>{{nameAndLastNameText}}</b> Sergio Molino</mat-card-subtitle>
-                <mat-card-subtitle><b>{{planText}}</b> Basico</mat-card-subtitle>
-                <mat-card-subtitle><b>{{planNumberText}}</b> NA123</mat-card-subtitle>
+                <mat-card-subtitle><b>{{nameAndLastNameText}}</b> {{affiliateData.firstnameAndLastname}}</mat-card-subtitle>
+                <mat-card-subtitle><b>{{planText}}</b> {{affiliateData.plan}}</mat-card-subtitle>
+                <mat-card-subtitle><b>{{planNumberText}}</b> {{affiliateData.planNumber}}</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <mat-form-field class="full-width">
@@ -28,9 +28,9 @@
               <mat-card-header class="prescription-header">
                 <img mat-card-avatar src="assets/images/ConectarSalud_TP_7547.png"/>
                 <mat-card-title>{{medicTitleText}}</mat-card-title>
-                <mat-card-subtitle><b>{{nameAndLastNameText}}</b> John Doe</mat-card-subtitle>
-                <mat-card-subtitle><b>{{licenseText}}</b> AVS123</mat-card-subtitle>
-                <mat-card-subtitle><b>{{specialitiesText}}</b> Clinica, Pediatria</mat-card-subtitle>
+                <mat-card-subtitle><b>{{nameAndLastNameText}}</b> {{doctorData.firstnameAndLastname}}</mat-card-subtitle>
+                <mat-card-subtitle><b>{{licenseText}}</b> {{doctorData.license}}</mat-card-subtitle>
+                <mat-card-subtitle><b>{{specialitiesText}}</b> {{doctorData.specialties}}</mat-card-subtitle>
               </mat-card-header>
               <mat-card-actions style="text-align: center;">
                 <b>{{footerText}}</b>

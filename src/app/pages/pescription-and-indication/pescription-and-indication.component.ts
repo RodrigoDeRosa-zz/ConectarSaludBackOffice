@@ -4,6 +4,7 @@ import {DoctorsService} from '../../services/doctors.service';
 import {RequestPrescriptionAndConsultationDto} from '../../models/request-prescription-and-consultation-dto';
 import {ToastrService} from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SessionService} from "../../services/session.service";
 
 @Component({
   selector: 'app-pescription-and-indication',
@@ -44,22 +45,35 @@ export class PescriptionAndIndicationComponent implements OnInit {
   data: RequestPrescriptionAndConsultationDto;
 
   private consultationId: string;
+  private affiliateData: { firstnameAndLastname: string; plan: string; planNumber: string };
+  private doctorData: { license: string; firstnameAndLastname: string; specialties: string };
 
   constructor(private _doctorsService: DoctorsService,
               private _toastr: ToastrService,
               private _route: ActivatedRoute,
-              private _router: Router) { }
+              private _router: Router,
+              private _session: SessionService) { }
 
   ngOnInit() {
     // mandatory params
     this.consultationId = this._route.snapshot.paramMap.get('id');
     // extra params
-    console.log(this._route.snapshot.paramMap.get('other'));
+    this.affiliateData = {
+      firstnameAndLastname: this._route.snapshot.paramMap.get('affiliate_first_name')+' '+this._route.snapshot.paramMap.get('affiliate_last_name'),
+      plan: this._route.snapshot.paramMap.get('affiliate_plan'),
+      planNumber: this._route.snapshot.paramMap.get('affiliate_id')
+    };
     this.data = {
       prescription: '',
       indications: ''
+    };
+    // doctor data
+    const user = this._session.getUserFromSession();
+    this.doctorData = {
+      firstnameAndLastname: `${user.first_name} ${user.last_name}`,
+      license: `${user.licence}`,
+      specialties: `${user.specialties}`,
     }
-
   }
 
   dontApply($event: MatCheckboxChange, type: string) {
@@ -70,10 +84,11 @@ export class PescriptionAndIndicationComponent implements OnInit {
   }
 
   submit() {
-    this._doctorsService.PatchPrescription({doctor_id: '123', consultation_id: this.consultationId, prescriptionAndConsultationDto: this.data})
+    const doctor = this._session.getUserFromSession();
+    this._doctorsService.PatchPrescription({doctor_id: doctor.id, consultation_id: this.consultationId, prescriptionAndConsultationDto: this.data})
       .subscribe(data => {
-          this._toastr.error(this.savingSuccessPrescriptionMessage,this.savingSuccessPrescriptionTitle);
-          this._router.navigate(['/admin/medicos/consultas']);
+          this._toastr.success(this.savingSuccessPrescriptionMessage,this.savingSuccessPrescriptionTitle);
+          this._router.navigate(['/medico/consultas']);
         },
         err => {
           console.error(err);

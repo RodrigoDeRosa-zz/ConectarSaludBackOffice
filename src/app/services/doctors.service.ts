@@ -208,7 +208,7 @@ class DoctorsService extends __BaseService {
   PatchPrescriptionResponse(params: DoctorsService.PatchPrescriptionParams): __Observable<__StrictHttpResponse<Doctor>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
-    let __body: any = null;
+    let __body: any = params.prescriptionAndConsultationDto;
     let req = new HttpRequest<any>(
       'PATCH',
       this.rootUrl + `${DoctorsService.PatchDoctorPath}/${params.doctor_id}/consultations/${params.consultation_id}`,

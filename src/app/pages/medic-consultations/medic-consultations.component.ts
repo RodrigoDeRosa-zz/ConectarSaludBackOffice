@@ -39,14 +39,11 @@ export class MedicConsultationsComponent implements OnInit {
     const user = this._session.getUserFromSession();
     this._consultationsService.getConsultationGET({doctor: user.id})
       .subscribe(data => {
-          console.log(data);
-          console.log('generate consultation id and redirect d3b3e0df-7723-4766-ba82-24beea4899fa');
-          this._router.navigate([`/medico/consultas/${data.consultation_id}/receta-indicaciones`]);
+          this._router.navigate([`/medico/consultas/${data.consultation_id}/receta-indicaciones`,data]);
         },
         err => {
           console.error(err);
           this._toastr.error(this.loadingErrorConsultationsMessage,this.loadingErrorConsultationsTitle);
-          this._router.navigate([`/medico/consultas/123/receta-indicaciones`]);
         });
   }
 }

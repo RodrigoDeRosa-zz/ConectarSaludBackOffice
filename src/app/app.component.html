@@ -3,7 +3,7 @@
     <span class = "gap">Conectar Salud</span>
     <ng-container *ngIf="showLoggedInInformation()">
       <ng-container *ngFor="let button of buttons">
-        <a [href]="button.href" mat-button>{{button.title}}</a>
+        <a *ngIf="!button.role || userLoggedInRole === button.role" [href]="button.href" mat-button>{{button.title}}</a>
       </ng-container>
       <span class = "filler"></span>
       <span>{{loggedInRole}}</span>

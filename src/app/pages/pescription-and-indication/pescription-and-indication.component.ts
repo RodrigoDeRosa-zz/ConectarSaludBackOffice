@@ -5,6 +5,7 @@ import {RequestPrescriptionAndConsultationDto} from '../../models/request-prescr
 import {ToastrService} from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SessionService} from "../../services/session.service";
+import * as moment from 'moment/moment';
 
 @Component({
   selector: 'app-pescription-and-indication',
@@ -47,6 +48,7 @@ export class PescriptionAndIndicationComponent implements OnInit {
   private consultationId: string;
   private affiliateData: { firstnameAndLastname: string; plan: string; planNumber: string };
   private doctorData: { license: string; firstnameAndLastname: string; specialties: string };
+  date: string;
 
   constructor(private _doctorsService: DoctorsService,
               private _toastr: ToastrService,
@@ -55,6 +57,7 @@ export class PescriptionAndIndicationComponent implements OnInit {
               private _session: SessionService) { }
 
   ngOnInit() {
+    this.date = moment().format('DD-MM-YYYY');
     // mandatory params
     this.consultationId = this._route.snapshot.paramMap.get('id');
     // extra params

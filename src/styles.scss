@@ -1,7 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~@material/layout-grid/mdc-layout-grid";
 @import '~ngx-toastr/toastr';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* http://www.carbonrider.com/2019/01/30/material-theme-with-angular-7-change-primary-and-accent-color/
+For use in src/lib/core/theming/_palette.scss */
+$mat-myapp-primary: (
+  50 : #f4fbf3,
+  100 : #e3f5e2,
+  200 : #d0eecf,
+  300 : #bde7bc,
+  400 : #aee2ad,
+  500 : #a0dd9f,
+  600 : #98d997,
+  700 : #8ed48d,
+  800 : #84cf83,
+  900 : #73c772,
+  A100 : #ffffff,
+  A200 : #ffffff,
+  A400 : #ddffdd,
+  A700 : #c4ffc3,
+  contrast: (
+    50 : #ffffff,
+    100 : #ffffff,
+    200 : #ffffff,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$mat-myapp-accent: (
+  50 : #f3fbff,
+  100 : #e1f5fe,
+  200 : #cdeefe,
+  300 : #b9e7fe,
+  400 : #aae1fd,
+  500 : #9bdcfd,
+  600 : #93d8fd,
+  700 : #89d3fc,
+  800 : #7fcefc,
+  900 : #6dc5fc,
+  A100 : #ffffff,
+  A200 : #ffffff,
+  A400 : #ffffff,
+  A700 : #f2faff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$primary: mat-palette($mat-myapp-primary);
+$accent: mat-palette($mat-myapp-accent);
+
+$theme: mat-light-theme($primary,$accent);
+
+@include angular-material-theme($theme);
+
+

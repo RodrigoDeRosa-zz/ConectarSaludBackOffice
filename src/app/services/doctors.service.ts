@@ -11,6 +11,7 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import {RestResponseOfPagedResourcesOfDoctors} from '../models/rest-response-of-paged-resources-of-doctors';
 import {DoctorDto} from '../models/doctor-dto';
 import {Doctor} from '../models/doctor';
+import {RequestPrescriptionAndConsultationDto} from '../models/request-prescription-and-consultation-dto';
 
 /**
  * ABM doctors services
@@ -198,6 +199,45 @@ class DoctorsService extends __BaseService {
     );
   }
 
+  /**
+   * Patch prescription and indications
+   * @param doctor_id doctor id
+   * @param consultation_id consultation id
+   * @return OK
+   */
+  PatchPrescriptionResponse(params: DoctorsService.PatchPrescriptionParams): __Observable<__StrictHttpResponse<Doctor>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = params.prescriptionAndConsultationDto;
+    let req = new HttpRequest<any>(
+      'PATCH',
+      this.rootUrl + `${DoctorsService.PatchDoctorPath}/${params.doctor_id}/consultations/${params.consultation_id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Doctor>;
+      })
+    );
+  }
+  /**
+   * Patch prescription and indications
+   * @param doctor_id doctor id
+   * @param consultation_id consultation id
+   * @return OK
+   */
+  PatchPrescription(params: DoctorsService.PatchPrescriptionParams): __Observable<Doctor> {
+    return this.PatchPrescriptionResponse(params).pipe(
+      __map(_r => _r.body as DoctorDto)
+    );
+  }
+
 
 }
 
@@ -226,6 +266,27 @@ module DoctorsService {
      * categoriaPermisoDto
      */
     doctorDto: DoctorDto;
+  }
+
+  /**
+   * Parameters to patch prescription and indications
+   */
+  export interface PatchPrescriptionParams {
+
+    /**
+     * doctor id
+     */
+    doctor_id: string;
+
+    /**
+     * consultation id
+     */
+    consultation_id: string;
+
+    /**
+     * prescription and indiications text
+     */
+    prescriptionAndConsultationDto: RequestPrescriptionAndConsultationDto;
   }
 
 }

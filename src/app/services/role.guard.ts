@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {SessionService} from './session.service';
 import {ToastrService} from 'ngx-toastr';
+import {RoleConstants} from "../constants/role.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,10 @@ export class RoleGuard implements CanActivate {
     } else if (expectedRole !== actualRole.role){
       this.toastr.error("El usuario ingresado no tiene permisos para acceder, por favor intente con otro",
         "Usuario No Autorizado")
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
       return false;
     }
     return true;
   }
-  
+
 }

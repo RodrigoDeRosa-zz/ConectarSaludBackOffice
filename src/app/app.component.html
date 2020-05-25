@@ -1,11 +1,16 @@
 <header>
   <mat-toolbar color = "primary">
     <span class = "gap">Conectar Salud</span>
-    <ng-container *ngFor="let button of buttons">
-      <a [href]="button.href" mat-button>{{button.title}}</a>
+    <ng-container *ngIf="showLoggedInInformation()">
+      <ng-container *ngFor="let button of buttons">
+        <a *ngIf="!button.role || userLoggedInRole === button.role" [href]="button.href" mat-button>{{button.title}}</a>
+      </ng-container>
+      <span class = "filler"></span>
+      <span>{{loggedInRole}}</span>
+      <button mat-icon-button aria-label="Logout icon" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
     </ng-container>
-    <span class = "filler"></span>
-    <span>Administrativo</span>
   </mat-toolbar>
 </header>
 

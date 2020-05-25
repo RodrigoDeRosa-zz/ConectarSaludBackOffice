@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {BaseService as __BaseService} from './base.service';
 import {AppConfigService as __Configuration} from '../providers/app-config.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {sha256} from 'js-sha256';
+import {AuthenticatedUser} from "../models/authenticated-user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService extends __BaseService {
   private authenticatePath = '/authenticate';
+
+  @Output() getAuthenticatedUser: EventEmitter<any> = new EventEmitter();
 
   constructor(
     config: __Configuration,
@@ -26,4 +29,7 @@ export class LoginService extends __BaseService {
     return this.http.post(this.config.getRootUrl() + this.authenticatePath, body, {headers: __headers});
   }
 
+  publishSuccessfullyAuthentication(result:AuthenticatedUser) {
+    this.getAuthenticatedUser.emit(result);
+  }
 }

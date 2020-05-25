@@ -46,8 +46,8 @@ export class PescriptionAndIndicationComponent implements OnInit {
   data: RequestPrescriptionAndConsultationDto;
 
   private consultationId: string;
-  private affiliateData: { firstnameAndLastname: string; plan: string; planNumber: string };
-  private doctorData: { license: string; firstnameAndLastname: string; specialties: string };
+  affiliateData: { firstnameAndLastname: string; plan: string; planNumber: string };
+  doctorData: { license: string; firstnameAndLastname: string; specialties: string };
   date: string;
 
   constructor(private _doctorsService: DoctorsService,

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from './services/session.service';
 import { Router } from '@angular/router';
-import {RoleConstants} from "./constants/role.constants";
+import {RoleConstants} from './constants/role.constants';
+import {LoginService} from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -34,11 +35,17 @@ export class AppComponent implements OnInit {
   userLoggedInRole: string;
 
   constructor(private _session: SessionService,
-              private _router: Router,) {
+              private _router: Router,
+              private _loginService: LoginService) {
+    _loginService.getAuthenticatedUser.subscribe(user => this.renderMenu(user));
   }
 
   ngOnInit(){
     const user = this._session.getUserFromSession();
+    this.renderMenu(user);
+  }
+
+  renderMenu(user){
     if(user){
       this.userLoggedInRole = user.role;
       switch (this.userLoggedInRole) {

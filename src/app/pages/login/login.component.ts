@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
     this.loginService.authenticate(this.loginForm.get('dni').value, this.loginForm.get('password').value).subscribe(
 (response:AuthenticatedUser) => {
         this.sessionService.createUserOnSession(response);
+        this.loginService.publishSuccessfullyAuthentication(response);
         this.loading = false;
         this.router.navigate(['/']);
       },

@@ -20,8 +20,8 @@ export class MedicConsultationsComponent implements OnInit {
 
   getConsultationButtonText = 'Obtener Consulta';
 
-  private loadingErrorConsultationsMessage = 'Vuelva a intentarlo mas tarde.';
-  private loadingErrorConsultationsTitle = 'Problema al reaizar la consulta medica';
+  private loadingErrorConsultationsMessage = 'Vuelva en unos minutos';
+  private loadingErrorConsultationsTitle = 'No hay pacientes en espera';
 
   constructor(private _consultationsService: ConsultationService,
               private _toastr: ToastrService,
@@ -43,7 +43,7 @@ export class MedicConsultationsComponent implements OnInit {
         },
         err => {
           console.error(err);
-          this._toastr.error(this.loadingErrorConsultationsMessage,this.loadingErrorConsultationsTitle);
+          this._toastr.info(this.loadingErrorConsultationsMessage,this.loadingErrorConsultationsTitle);
         });
   }
 }

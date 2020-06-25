@@ -7,6 +7,7 @@ export class FormTab {
   eneable?:boolean;
   contentList?:TabContentList = new TabContentList();
   contentForm?:TabContentForm = new TabContentForm();
+  show = true;
   constructor(type:"list"|"form"){
     this.type = type;
   }

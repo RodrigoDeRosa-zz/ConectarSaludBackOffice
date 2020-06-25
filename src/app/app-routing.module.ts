@@ -7,10 +7,11 @@ import { MedicsComponent } from './pages/medics/medics.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MedicConsultationsComponent } from './pages/medic-consultations/medic-consultations.component';
 import { PescriptionAndIndicationComponent } from './pages/pescription-and-indication/pescription-and-indication.component';
-import {HomeComponent} from './pages/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
+import { MedicHistoryComponent } from './pages/medic-history/medic-history.component';
 
 import {RoleConstants} from './constants/role.constants';
-import {AuthGuard} from "./services/auth.guard";
+import {AuthGuard} from './services/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,6 +22,11 @@ const routes: Routes = [
     }
   },
   { path: 'medico/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
+    data: {
+      expectedRole: RoleConstants.MEDIC_ROLE
+    }
+  },
+  { path: 'medico/historico', component: MedicHistoryComponent, canActivate: [RoleGuard],
     data: {
       expectedRole: RoleConstants.MEDIC_ROLE
     }

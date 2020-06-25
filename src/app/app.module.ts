@@ -38,6 +38,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { MedicConsultationsComponent } from './pages/medic-consultations/medic-consultations.component';
 import { PescriptionAndIndicationComponent } from './pages/pescription-and-indication/pescription-and-indication.component';
 import { HomeComponent } from './pages/home/home.component';
+import { MedicHistoryComponent } from './pages/medic-history/medic-history.component';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadConfig();
@@ -55,7 +56,8 @@ export function initConfig(appConfig: AppConfigService) {
     LoginComponent,
     MedicConsultationsComponent,
     PescriptionAndIndicationComponent,
-    HomeComponent
+    HomeComponent,
+    MedicHistoryComponent
   ],
   imports: [
     BrowserModule,

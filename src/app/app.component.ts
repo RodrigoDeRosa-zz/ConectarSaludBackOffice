@@ -29,6 +29,11 @@ export class AppComponent implements OnInit {
       title: 'CONSULTAS',
       href: 'medico/consultas',
       role: RoleConstants.MEDIC_ROLE
+    },
+    {
+      title: 'HISTÓRICO',
+      href: 'medico/historico',
+      role: RoleConstants.MEDIC_ROLE
     }
   ];
 

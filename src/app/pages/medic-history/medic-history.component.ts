@@ -24,10 +24,10 @@ export class MedicHistoryComponent implements OnInit {
   licence = 'M.N. ABS123';
 
   displayedColumns: TableColumns[] = [
-    {name: 'Nombre y apellido',key: 'position'},
-    {name: 'Número de afiliado',key: 'name'},
-    {name: 'Email', key: 'weight'},
-    {name: 'Fecha', key: 'symbol'},
+    {name: 'Nombre y apellido afiliado',key: 'patient_name'},
+    {name: 'Número de afiliado',key: 'patient_dni'},
+    {name: 'Plan', key: 'patient_plan'},
+    {name: 'Fecha', key: 'date'},
     {name: 'Acciones', key: 'actions', isAction: true,
       actions: [{
         name: 'Ver info',
@@ -39,21 +39,22 @@ export class MedicHistoryComponent implements OnInit {
   dataSource: any;
   displayedData: any[];
   private unpaginatedData: any[];
+  private filteredData: any[];
   configPagination = {
     totalRecords: 12,
     page: 0,
     size: 10
   };
   filtersData = [
-    new ABMGenericFormField({ name: 'name_and_lastname', value: '', title: 'Nombre y apellido afiliado', type: 'text', size: 'span-3' }),
+    new ABMGenericFormField({ name: 'patient_name', value: '', title: 'Nombre y apellido afiliado', type: 'text', size: 'span-3' }),
     new ABMGenericFormField({ name: 'date_begin', value: '', title: 'Fecha desde', type: 'date', size: 'span-2' }),
     new ABMGenericFormField({ name: 'date_end', value: '', title: 'Fecha hasta', type: 'date', size: 'span-2' }),
     new ABMGenericFormField({ name: 'submit', value: '', title: 'Buscar', type: 'submit', size: 'span-1' }),
   ];
 
   updatedData(displayedData: any[]) {
-    this.unpaginatedData = displayedData;
-    this.configPagination.totalRecords = this.unpaginatedData.length;
+    this.unpaginatedData = this.filteredData = displayedData;
+    this.configPagination.totalRecords = this.filteredData.length;
     this.paginate(this.configPagination.size, this.configPagination.page);
     this.dataSource.sort = this.sort;
   }
@@ -63,23 +64,24 @@ export class MedicHistoryComponent implements OnInit {
   ngOnInit() {
     this.columnsList = _.map(this.displayedColumns, (col) => col.key);
     this.updatedData([
-      {position: 'Francis Perro', name: '123.312', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
-      {position: 'Maria Canasta', name: '142.212', weight: 'fperro@email.com', symbol: '05-06-2020'},
+      { patient_name: 'Francis Perro', patient_dni: '123.312', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
+      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
     ]);
   }
 
   onClickAction($event: MouseEvent, action: any, element: any) {
     window.alert(JSON.stringify(element));
+    // TODO: https://acdpii.atlassian.net/browse/CST-140
   }
 
   changePage($event: PageEvent) {
@@ -88,12 +90,24 @@ export class MedicHistoryComponent implements OnInit {
   }
 
   private paginate(page_size, page_number) {
-    this.displayedData = this.unpaginatedData.slice(page_number * page_size, (page_number+1) * page_size);
+    this.displayedData = this.filteredData.slice(page_number * page_size, (page_number+1) * page_size);
     this.dataSource = new MatTableDataSource(this.displayedData);
   }
 
   search(callObject: { values: any, onSubmitCallback: Function } = { values: {}, onSubmitCallback: (res) => { console.warn("onSubmitCallback not defined") } }) {
-    window.alert(JSON.stringify(callObject.values));
+    const filters = callObject.values;
+    this.filteredData = this.unpaginatedData;
+    if(filters.patient_name != '') {
+      this.filteredData = _.filter(this.filteredData, (data) => data.patient_name.includes(filters.patient_name));
+    }
+    if(filters.date_begin != ''){
+      this.filteredData = _.filter(this.filteredData, (data) => data.date >= filters.date_begin);
+    }
+    if(filters.date_end){
+      this.filteredData = _.filter(this.filteredData, (data) => data.date <= filters.date_end);
+    }
+    this.paginate(this.configPagination.size, this.configPagination.page);
+    this.configPagination.totalRecords = this.filteredData.length;
     callObject.onSubmitCallback({});
   }
 }

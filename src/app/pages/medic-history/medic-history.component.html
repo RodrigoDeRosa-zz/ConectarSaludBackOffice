@@ -1,1 +1,59 @@
-<p>medic-history works!</p>
+<div class="mdc-layout-grid">
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell--span-12">
+      <h1 class="mat-headline">{{title}}</h1>
+      <h3 class="mat-h3">{{doctor}} - {{licence}}</h3>
+    </div>
+    <div class="mdc-layout-grid__cell--span-12">
+      <generic-form
+        #createForm;
+        [fields]="filtersData"
+        (onSubmit)="search($event)"
+      ></generic-form>
+    </div>
+    <div class="mdc-layout-grid__cell--span-12">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+        <!-- Position Column -->
+        <ng-container *ngFor="let item of displayedColumns">
+          <!--
+            Render column data
+          -->
+          <ng-container *ngIf="!item.isAction" matColumnDef="{{item.key}}">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{item.name}} </th>
+            <td mat-cell *matCellDef="let element"> {{lodash.get(element,item.key)}} </td>
+          </ng-container>
+          <!--
+            Render column action
+          -->
+          <ng-container *ngIf="item.isAction" matColumnDef="{{item.key}}">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element" class="action-link">
+              <ng-container *ngFor="let action of item.actions">
+                <a [id]="action.id" *ngIf="!action.notShow || !action.notShow(element)" style="cursor: pointer;" [title]="action.name" (click)="onClickAction($event,action,element)">
+                  <mat-icon aria-hidden="false" aria-label="icon">{{action.icon}}</mat-icon>
+                </a>
+              </ng-container>
+            </td>
+          </ng-container>
+        </ng-container>
+        <!-- Row -->
+        <tr mat-header-row *matHeaderRowDef="columnsList"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsList;" class="example-element-row"></tr>
+      </table>
+      <div *ngIf="!dataSource.filteredData.length" class="no-records">
+        No se encontraron registros
+      </div>
+    </div>
+  </div>
+  <div class="mdc-layout-grid__inner">
+    <div class="mdc-layout-grid__cell--span-12">
+      <mat-paginator [length]="configPagination?.totalRecords"
+                     [pageIndex]="configPagination?.page"
+                     [pageSize]="configPagination?.size"
+                     [pageSizeOptions]="[]"
+                     (page)="changePage($event)"
+                     style="margin-top: 20px;">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

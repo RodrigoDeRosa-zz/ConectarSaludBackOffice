@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { NativeDateAdapter } from '@angular/material';
 import { MatDateFormats, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { ABMGenericFormField } from '../../models/generic-form-field';
 

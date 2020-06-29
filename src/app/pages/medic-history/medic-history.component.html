@@ -1,17 +1,18 @@
-<div class="mdc-layout-grid">
+<div class="mdc-layout-grid without-padding">
   <div class="mdc-layout-grid__inner">
     <div class="mdc-layout-grid__cell--span-12">
       <h1 class="mat-headline">{{title}}</h1>
-      <h3 class="mat-h3">{{doctor}} - {{licence}}</h3>
+      <h3 class="mat-h3" style="margin-bottom: 0px;">{{doctor}} - {{licence}}</h3>
     </div>
     <div class="mdc-layout-grid__cell--span-12">
       <generic-form
         #createForm;
         [fields]="filtersData"
+        [withoutPadding]="true"
         (onSubmit)="search($event)"
       ></generic-form>
     </div>
-    <div class="mdc-layout-grid__cell--span-12">
+    <div class="mdc-layout-grid__cell--span-12 without-padding">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
         <!-- Position Column -->
         <ng-container *ngFor="let item of displayedColumns">

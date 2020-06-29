@@ -92,6 +92,8 @@ export class ABMGenericFormComponent implements OnInit {
   /* From */
   genericForm: FormGroup;
 
+  @Input('withoutPadding') withoutPadding: boolean;
+
   constructor(private fb: FormBuilder, private elRef: ElementRef) { }
 
   ngOnInit() {

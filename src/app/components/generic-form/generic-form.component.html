@@ -1,5 +1,5 @@
 <form validate [formGroup]="genericForm" (ngSubmit)="submit($event)" (focusout)="onFocusOut($event)">
-	<div class="mdc-layout-grid">
+	<div class="mdc-layout-grid {{withoutPadding? 'without-padding':''}}">
 		<div class="mdc-layout-grid__inner inputs-container">
 
 			<ng-template ngFor let-field [ngForOf]="fields">

@@ -2,6 +2,8 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 
+import * as moment from 'moment/moment';
+
 import {TableColumns} from '../../models/table-columns';
 
 import * as _ from 'lodash';
@@ -114,11 +116,11 @@ export class MedicHistoryComponent implements OnInit {
     if(filters.patient_name != '') {
       this.filteredData = _.filter(this.filteredData, (data) => data.patient_name.includes(filters.patient_name));
     }
-    if(filters.date_begin != ''){
-      this.filteredData = _.filter(this.filteredData, (data) => data.date >= filters.date_begin);
+    if(filters.date_begin){
+      this.filteredData = _.filter(this.filteredData, (data) => moment(moment(filters.date_begin).format('DD-MM-YYYY')).isBefore(data.date));
     }
     if(filters.date_end){
-      this.filteredData = _.filter(this.filteredData, (data) => data.date <= filters.date_end);
+      this.filteredData = _.filter(this.filteredData, (data) =>  moment(moment(data.date).format('DD-MM-YYYY')).isBefore(filters.date_end));
     }
     this.paginate(this.configPagination.size, this.configPagination.page);
     this.configPagination.totalRecords = this.filteredData.length;

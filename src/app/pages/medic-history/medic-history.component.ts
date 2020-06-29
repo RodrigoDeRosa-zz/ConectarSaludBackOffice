@@ -7,7 +7,10 @@ import {TableColumns} from '../../models/table-columns';
 import * as _ from 'lodash';
 import {PageEvent} from "@angular/material/paginator";
 import {ABMGenericFormField} from "../../models/generic-form-field";
-import {Validators} from "@angular/forms";
+import {ConsultationService} from "../../services/consultation.service";
+import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
+import {SessionService} from "../../services/session.service";
 
 @Component({
   selector: 'app-medic-history',
@@ -22,6 +25,9 @@ export class MedicHistoryComponent implements OnInit {
   title = 'Historial Consultas Médicas';
   doctor = 'Dr. Felipe Acuña';
   licence = 'M.N. ABS123';
+
+  private loadingErrorConsultationsMessage = 'Vuelva en unos minutos';
+  private loadingErrorConsultationsTitle = 'No hay pacientes en espera';
 
   displayedColumns: TableColumns[] = [
     {name: 'Nombre y apellido afiliado',key: 'patient_name'},
@@ -59,7 +65,10 @@ export class MedicHistoryComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  constructor() { }
+  constructor(private _consultationsService: ConsultationService,
+              private _toastr: ToastrService,
+              private _router: Router,
+              private _session: SessionService) { }
 
   ngOnInit() {
     this.columnsList = _.map(this.displayedColumns, (col) => col.key);
@@ -109,5 +118,17 @@ export class MedicHistoryComponent implements OnInit {
     this.paginate(this.configPagination.size, this.configPagination.page);
     this.configPagination.totalRecords = this.filteredData.length;
     callObject.onSubmitCallback({});
+  }
+
+  getConsultation() {
+    const user = this._session.getUserFromSession();
+    this._consultationsService.getConsultationGET({doctor: user.id})
+      .subscribe(data => {
+          this._router.navigate([`/medico/consultas/${data.consultation_id}/receta-indicaciones`,data]);
+        },
+        err => {
+          console.error(err);
+          this._toastr.info(this.loadingErrorConsultationsMessage,this.loadingErrorConsultationsTitle);
+        });
   }
 }

@@ -14,7 +14,11 @@ import * as moment from 'moment/moment';
 })
 export class PescriptionAndIndicationComponent implements OnInit {
 
+  specialId = 'fjsa-231f-dcvi-432';
+  onlyRead = false;
+
   title = 'Ingrese a la aplicación para unirse a la videollamada con:';
+  titleReadOnly = 'Consulta realizada a:';
   prescriptionTitleText = 'Receta';
   dontApplyText = 'No aplica';
   medicTitleText = 'Atendido por';
@@ -32,6 +36,7 @@ export class PescriptionAndIndicationComponent implements OnInit {
   indicationsPlaceholderText = 'Debe hacer reposo durante 3 dias';
   indicationsLabelText = 'Indicaciones para el paciente';
   finishButtonText = 'Finalizar Consulta';
+  backButtonText = 'Volver al histórico';
 
   private savingSuccessPrescriptionMessage = 'Receta e indicaciones cargadas correctamente';
   private savingErrorPrescriptionMessage = 'Vuelva a intentarlo nuevamente';
@@ -57,18 +62,19 @@ export class PescriptionAndIndicationComponent implements OnInit {
               private _session: SessionService) { }
 
   ngOnInit() {
-    this.date = moment().format('DD-MM-YYYY');
     // mandatory params
     this.consultationId = this._route.snapshot.paramMap.get('id');
+    this.onlyRead = this.consultationId === this.specialId;
     // extra params
+    this.date = this.onlyRead? 'TODO: modify':moment().format('DD-MM-YYYY');
     this.affiliateData = {
       firstnameAndLastname: this._route.snapshot.paramMap.get('affiliate_first_name')+' '+this._route.snapshot.paramMap.get('affiliate_last_name'),
       plan: this._route.snapshot.paramMap.get('affiliate_plan'),
       planNumber: this._route.snapshot.paramMap.get('affiliate_id')
     };
     this.data = {
-      prescription: '',
-      indications: ''
+      prescription: this.onlyRead? 'TODO: modify':'',
+      indications: this.onlyRead? 'TODO: modify':'',
     };
     // doctor data
     const user = this._session.getUserFromSession();
@@ -91,11 +97,15 @@ export class PescriptionAndIndicationComponent implements OnInit {
     this._doctorsService.PatchPrescription({doctor_id: doctor.id, consultation_id: this.consultationId, prescriptionAndConsultationDto: this.data})
       .subscribe(data => {
           this._toastr.success(this.savingSuccessPrescriptionMessage,this.savingSuccessPrescriptionTitle);
-          this._router.navigate(['/medico/consultas']);
+          this._router.navigate(['/medico/historico']);
         },
         err => {
           console.error(err);
           this._toastr.error(this.savingErrorPrescriptionMessage,this.savingErrorPrescriptionTitle);
         });
+  }
+
+  backToHistory() {
+    this._router.navigate(['/medico/historico']);
   }
 }

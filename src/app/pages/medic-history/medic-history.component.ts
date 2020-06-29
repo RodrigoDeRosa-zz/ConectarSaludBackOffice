@@ -73,7 +73,7 @@ export class MedicHistoryComponent implements OnInit {
   ngOnInit() {
     this.columnsList = _.map(this.displayedColumns, (col) => col.key);
     this.updatedData([
-      { patient_name: 'Francis Perro', patient_dni: '123.312', patient_plan: 'Básico', date: '05-06-2020'},
+      { id: 1, patient_name: 'Francis Perro', patient_dni: '123.312', patient_plan: 'Básico', date: '05-06-2020'},
       { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
       { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
       { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
@@ -89,8 +89,13 @@ export class MedicHistoryComponent implements OnInit {
   }
 
   onClickAction($event: MouseEvent, action: any, element: any) {
-    window.alert(JSON.stringify(element));
-    // TODO: https://acdpii.atlassian.net/browse/CST-140
+    const data = {
+      affiliate_first_name: element.patient_name.split(' ')[0],
+      affiliate_last_name: element.patient_name.split(' ')[1],
+      affiliate_plan: element.patient_plan,
+      affiliate_id: element.patient_dni,
+    };
+    this._router.navigate([`/medico/consultas/fjsa-231f-dcvi-432/receta-indicaciones`, data]);
   }
 
   changePage($event: PageEvent) {

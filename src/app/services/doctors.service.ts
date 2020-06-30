@@ -239,6 +239,61 @@ class DoctorsService extends __BaseService {
   }
 
 
+  getPrescriptionInfoUsingGET(params: { doctor_id: any; consultation_id: string }) {
+    return this.getPrescriptionInfoUsingGETResponse(params).pipe(
+      __map(_r => _r.body as any)
+    );
+  }
+
+  private getPrescriptionInfoUsingGETResponse(params: any) {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = {};
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `${DoctorsService.PatchDoctorPath}/${params.doctor_id}/prescriptions/${params.consultation_id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  private getIndicationsInfoUsingGETResponse(params: { doctor_id: any; consultation_id: string }) {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = {};
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `${DoctorsService.PatchDoctorPath}/${params.doctor_id}/consultations/${params.consultation_id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<any>;
+      })
+    );
+  }
+
+  getIndicationsInfoUsingGET(params: { doctor_id: any; consultation_id: string }) {
+    return this.getIndicationsInfoUsingGETResponse(params).pipe(
+      __map(_r => _r.body as any)
+    );
+  }
 }
 
 module DoctorsService {

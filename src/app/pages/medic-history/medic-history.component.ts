@@ -88,14 +88,14 @@ export class MedicHistoryComponent implements OnInit {
   }
 
   onClickAction($event: MouseEvent, action: any, element: any) {
-    window.alert(JSON.stringify(element))
     const data = {
       affiliate_first_name: element.patient_name.split(' ')[0],
       affiliate_last_name: element.patient_name.split(' ')[1],
       affiliate_plan: element.patient_plan,
       affiliate_id: element.patient_dni,
+      read_only: 'fjsa-231f-dcvi-432'
     };
-    this._router.navigate([`/medico/consultas/fjsa-231f-dcvi-432/receta-indicaciones`, data]);
+    this._router.navigate([`/medico/consultas/${element.consultation_id}/receta-indicaciones`, data]);
   }
 
   changePage($event: PageEvent) {
@@ -138,7 +138,7 @@ export class MedicHistoryComponent implements OnInit {
         });
   }
 
-  changeDateFormat(date: string) {
+  private changeDateFormat(date: string) {
     const dateParts = date.substring(0, 10).split("-");
     const ddMMYYYYDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     return ddMMYYYYDate;

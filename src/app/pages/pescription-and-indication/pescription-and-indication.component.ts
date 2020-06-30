@@ -64,25 +64,44 @@ export class PescriptionAndIndicationComponent implements OnInit {
   ngOnInit() {
     // mandatory params
     this.consultationId = this._route.snapshot.paramMap.get('id');
-    this.onlyRead = this.consultationId === this.specialId;
-    // extra params
-    this.date = this.onlyRead? 'TODO: modify':moment().format('DD-MM-YYYY');
-    this.affiliateData = {
-      firstnameAndLastname: this._route.snapshot.paramMap.get('affiliate_first_name')+' '+this._route.snapshot.paramMap.get('affiliate_last_name'),
-      plan: this._route.snapshot.paramMap.get('affiliate_plan'),
-      planNumber: this._route.snapshot.paramMap.get('affiliate_id')
-    };
-    this.data = {
-      prescription: this.onlyRead? 'TODO: modify':'',
-      indications: this.onlyRead? 'TODO: modify':'',
-    };
+    this.onlyRead = this._route.snapshot.paramMap.get('read_only') === this.specialId;
     // doctor data
     const user = this._session.getUserFromSession();
     this.doctorData = {
       firstnameAndLastname: `${user.first_name} ${user.last_name}`,
       license: `${user.licence}`,
       specialties: `${user.specialties}`,
+    };
+    this.data = {
+      prescription: this.onlyRead? 'Cargando...':'',
+      indications: this.onlyRead? 'Cargando...':'',
+    };
+    this.date = this.onlyRead? 'Cargando...':moment().format('DD-MM-YYYY');
+    if(this.onlyRead){
+      this._doctorsService.getPrescriptionInfoUsingGET({doctor_id: user.id, consultation_id: this.consultationId})
+        .subscribe(data => {
+            this.data.prescription = data.prescription_text;
+            this.date = data.date;
+          },
+          err => {
+            console.error(err);
+          });
+
+      this._doctorsService.getIndicationsInfoUsingGET({doctor_id: user.id, consultation_id: this.consultationId})
+        .subscribe(data => {
+            this.data.indications = data.indications;
+          },
+          err => {
+            console.error(err);
+          });
+
     }
+    // extra params
+    this.affiliateData = {
+      firstnameAndLastname: this._route.snapshot.paramMap.get('affiliate_first_name')+' '+this._route.snapshot.paramMap.get('affiliate_last_name'),
+      plan: this._route.snapshot.paramMap.get('affiliate_plan'),
+      planNumber: this._route.snapshot.paramMap.get('affiliate_id')
+    };
   }
 
   dontApply($event: MatCheckboxChange, type: string) {

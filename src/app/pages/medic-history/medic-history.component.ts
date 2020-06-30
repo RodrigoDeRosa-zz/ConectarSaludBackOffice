@@ -77,10 +77,11 @@ export class MedicHistoryComponent implements OnInit {
     const user = this._session.getUserFromSession();
     this._consultationsService.getAllConsultationsByDoctorUsingGET({doctorId: user.id})
       .subscribe(data => {
-          this.updatedData(_.map(data, (history) => ({
-            patient_name: history.patient_first_name+' '+history.patient_last_name,
-            ...history
-          })))
+          this.updatedData(_.map(data, (history) => {
+            return {
+              patient_name: history.patient_first_name+' '+history.patient_last_name,
+              ...history
+            }}))
         },
         err => {
           this.updatedData([]);
@@ -140,7 +141,7 @@ export class MedicHistoryComponent implements OnInit {
 
   private changeDateFormat(date: string) {
     const dateParts = date.substring(0, 10).split("-");
-    const ddMMYYYYDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    const ddMMYYYYDate = new Date(+dateParts[2], +dateParts[1] - 1, +dateParts[0]);
     return ddMMYYYYDate;
   }
 }

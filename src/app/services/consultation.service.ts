@@ -78,7 +78,7 @@ class ConsultationService extends __BaseService {
    *
    * @return OK
    */
-  getAllConsultationsByDoctorUsingGETResponse(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<__StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations>> {
+  getAllConsultationsByDoctorUsingGETResponse(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<__StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations[]>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -95,7 +95,7 @@ class ConsultationService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations>;
+        return _r as __StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations[]>;
       })
     );
   }
@@ -108,9 +108,9 @@ class ConsultationService extends __BaseService {
    *
    * @return OK
    */
-  getAllConsultationsByDoctorUsingGET(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<RestResponseOfPagedResourcesOfConsultations> {
+  getAllConsultationsByDoctorUsingGET(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<RestResponseOfPagedResourcesOfConsultations[]> {
     return this.getAllConsultationsByDoctorUsingGETResponse(params).pipe(
-      __map(_r => _r.body as RestResponseOfPagedResourcesOfConsultations)
+      __map(_r => _r.body as RestResponseOfPagedResourcesOfConsultations[])
     );
   }
 }

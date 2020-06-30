@@ -33,7 +33,7 @@ export class MedicHistoryComponent implements OnInit {
 
   displayedColumns: TableColumns[] = [
     {name: 'Nombre y apellido afiliado',key: 'patient_name'},
-    {name: 'Número de afiliado',key: 'patient_dni'},
+    {name: 'Número de afiliado',key: 'patient_id'},
     {name: 'Plan', key: 'patient_plan'},
     {name: 'Fecha', key: 'date'},
     {name: 'Acciones', key: 'actions', isAction: true,
@@ -74,23 +74,21 @@ export class MedicHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.columnsList = _.map(this.displayedColumns, (col) => col.key);
-    this.updatedData([
-      { id: 1, patient_name: 'Francis Perro', patient_dni: '123.312', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-      { patient_name: 'Maria Canasta', patient_dni: '142.212', patient_plan: 'Básico', date: '05-06-2020'},
-    ]);
+    const user = this._session.getUserFromSession();
+    this._consultationsService.getAllConsultationsByDoctorUsingGET({doctorId: user.id})
+      .subscribe(data => {
+          this.updatedData(_.map(data, (history) => ({
+            patient_name: history.patient_first_name+' '+history.patient_last_name,
+            ...history
+          })))
+        },
+        err => {
+          this.updatedData([]);
+        });
   }
 
   onClickAction($event: MouseEvent, action: any, element: any) {
+    window.alert(JSON.stringify(element))
     const data = {
       affiliate_first_name: element.patient_name.split(' ')[0],
       affiliate_last_name: element.patient_name.split(' ')[1],
@@ -112,15 +110,16 @@ export class MedicHistoryComponent implements OnInit {
 
   search(callObject: { values: any, onSubmitCallback: Function } = { values: {}, onSubmitCallback: (res) => { console.warn("onSubmitCallback not defined") } }) {
     const filters = callObject.values;
+    const dateFormat = 'YYYY-MM-DD';
     this.filteredData = this.unpaginatedData;
     if(filters.patient_name != '') {
       this.filteredData = _.filter(this.filteredData, (data) => data.patient_name.includes(filters.patient_name));
     }
     if(filters.date_begin){
-      this.filteredData = _.filter(this.filteredData, (data) => moment(moment(filters.date_begin).format('DD-MM-YYYY')).isBefore(data.date));
+      this.filteredData = _.filter(this.filteredData, (data) => moment(filters.date_begin).format(dateFormat) <= moment(this.changeDateFormat(data.date)).format(dateFormat));
     }
     if(filters.date_end){
-      this.filteredData = _.filter(this.filteredData, (data) =>  moment(moment(data.date).format('DD-MM-YYYY')).isBefore(filters.date_end));
+      this.filteredData = _.filter(this.filteredData, (data) =>  moment(filters.date_end).format(dateFormat) >= moment(this.changeDateFormat(data.date)).format(dateFormat));
     }
     this.paginate(this.configPagination.size, this.configPagination.page);
     this.configPagination.totalRecords = this.filteredData.length;
@@ -137,5 +136,11 @@ export class MedicHistoryComponent implements OnInit {
           console.error(err);
           this._toastr.info(this.loadingErrorConsultationsMessage,this.loadingErrorConsultationsTitle);
         });
+  }
+
+  changeDateFormat(date: string) {
+    const dateParts = date.substring(0, 10).split("-");
+    const ddMMYYYYDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    return ddMMYYYYDate;
   }
 }

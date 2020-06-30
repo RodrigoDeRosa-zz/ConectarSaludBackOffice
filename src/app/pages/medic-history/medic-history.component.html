@@ -41,7 +41,7 @@
         <tr mat-header-row *matHeaderRowDef="columnsList"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsList;" class="example-element-row"></tr>
       </table>
-      <div *ngIf="!dataSource.filteredData.length" class="no-records">
+      <div *ngIf="!dataSource || !dataSource.filteredData.length" class="no-records">
         No se encontraron registros
       </div>
     </div>

@@ -9,6 +9,7 @@ import {BaseService as __BaseService} from './base.service';
 import {AppConfigService as __Configuration} from '../providers/app-config.service';
 
 import { RestResponseOfDoctorConsultation } from '../models/rest-response-of-doctor-consultation';
+import { RestResponseOfPagedResourcesOfConsultations } from '../models/rest-response-of-paged-resources-of-consultations';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { RestResponseOfDoctorConsultation } from '../models/rest-response-of-doc
 class ConsultationService extends __BaseService {
 
   static readonly GetConsultationsGETPath = '/consultations';
+  static readonly GetConsultationsByDoctorGETPath = '/doctors/{id}/consultations/history';
 
   constructor(
     config: __Configuration,
@@ -68,6 +70,49 @@ class ConsultationService extends __BaseService {
       __map(_r => _r.body as RestResponseOfDoctorConsultation)
     );
   }
+
+  /**
+   * @param params The `ConsultationService.getAllConsultationsByDoctorUsingGET` containing the following parameters:
+   *
+   * - `doctorId`: string
+   *
+   * @return OK
+   */
+  getAllConsultationsByDoctorUsingGETResponse(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<__StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `${ConsultationService.GetConsultationsByDoctorGETPath}`.replace('{id}', params.doctorId),
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<RestResponseOfPagedResourcesOfConsultations>;
+      })
+    );
+  }
+
+  /**
+   * Request all doctors
+   * @param params The `ConsultationService.getAllConsultationsByDoctorUsingGET` containing the following parameters:
+   *
+   * - `doctorId`: string
+   *
+   * @return OK
+   */
+  getAllConsultationsByDoctorUsingGET(params: ConsultationService.GetAllConsultationsUsingGETParams): __Observable<RestResponseOfPagedResourcesOfConsultations> {
+    return this.getAllConsultationsByDoctorUsingGETResponse(params).pipe(
+      __map(_r => _r.body as RestResponseOfPagedResourcesOfConsultations)
+    );
+  }
 }
 
 module ConsultationService {
@@ -77,6 +122,13 @@ module ConsultationService {
    */
   export interface GetConsultationGETParams {
     doctor: string;
+  }
+
+  /**
+   * Parameters for GetAllConsultationsUsingGETParams
+   */
+  export interface GetAllConsultationsUsingGETParams {
+    doctorId: string;
   }
 }
 

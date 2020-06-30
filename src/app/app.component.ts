@@ -25,11 +25,11 @@ export class AppComponent implements OnInit {
       href: 'admin/medicos',
       role: RoleConstants.ADMIN_ROLE
     },
-    {
+    /*{
       title: 'CONSULTAS',
       href: 'medico/consultas',
       role: RoleConstants.MEDIC_ROLE
-    },
+    },*/
     {
       title: 'HISTÓRICO',
       href: 'medico/historico',

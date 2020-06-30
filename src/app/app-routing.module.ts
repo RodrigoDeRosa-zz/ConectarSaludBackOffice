@@ -21,11 +21,11 @@ const routes: Routes = [
       expectedRole: RoleConstants.ADMIN_ROLE
     }
   },
-  { path: 'medico/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
+  /*{ path: 'medico/consultas', component: MedicConsultationsComponent, canActivate: [RoleGuard],
     data: {
       expectedRole: RoleConstants.MEDIC_ROLE
     }
-  },
+  },*/
   { path: 'medico/historico', component: MedicHistoryComponent, canActivate: [RoleGuard],
     data: {
       expectedRole: RoleConstants.MEDIC_ROLE

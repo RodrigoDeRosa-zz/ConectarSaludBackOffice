@@ -75,6 +75,8 @@ export class MedicHistoryComponent implements OnInit {
   ngOnInit() {
     this.columnsList = _.map(this.displayedColumns, (col) => col.key);
     const user = this._session.getUserFromSession();
+    this.doctor = 'Dr. '+user.first_name+' '+user.last_name;
+    this.licence = 'M.N. '+user.licence;
     this._consultationsService.getAllConsultationsByDoctorUsingGET({doctorId: user.id})
       .subscribe(data => {
           this.updatedData(_.map(data, (history) => {

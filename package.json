@@ -27,6 +27,7 @@
     "@types/lodash": "^4.14.150",
     "express": "^4.17.1",
     "hammerjs": "^2.0.8",
+    "highcharts": "^8.1.2",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.15",
     "moment": "^2.25.1",
@@ -34,7 +35,8 @@
     "path": "^0.12.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "highcharts-angular": "latest"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.22",

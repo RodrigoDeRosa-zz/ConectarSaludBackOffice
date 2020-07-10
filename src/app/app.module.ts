@@ -39,6 +39,9 @@ import { MedicConsultationsComponent } from './pages/medic-consultations/medic-c
 import { PescriptionAndIndicationComponent } from './pages/pescription-and-indication/pescription-and-indication.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MedicHistoryComponent } from './pages/medic-history/medic-history.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
+import { HighchartsChartComponent } from 'highcharts-angular';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadConfig();
@@ -47,6 +50,7 @@ export function initConfig(appConfig: AppConfigService) {
 @NgModule({
   declarations: [
     AppComponent,
+    HighchartsChartComponent,
     MedicsComponent,
     ABMGenericAbmComponent,
     ABMGenericFormComponent,
@@ -57,7 +61,9 @@ export function initConfig(appConfig: AppConfigService) {
     MedicConsultationsComponent,
     PescriptionAndIndicationComponent,
     HomeComponent,
-    MedicHistoryComponent
+    MedicHistoryComponent,
+    PieChartComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,

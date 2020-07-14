@@ -18,6 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -40,7 +41,6 @@ import { PescriptionAndIndicationComponent } from './pages/pescription-and-indic
 import { HomeComponent } from './pages/home/home.component';
 import { MedicHistoryComponent } from './pages/medic-history/medic-history.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component';
-import { HighchartsChartComponent } from 'highcharts-angular';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 export function initConfig(appConfig: AppConfigService) {
@@ -50,7 +50,6 @@ export function initConfig(appConfig: AppConfigService) {
 @NgModule({
   declarations: [
     AppComponent,
-    HighchartsChartComponent,
     MedicsComponent,
     ABMGenericAbmComponent,
     ABMGenericFormComponent,
@@ -86,7 +85,8 @@ export function initConfig(appConfig: AppConfigService) {
     MatProgressSpinnerModule,
     MatInputModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HighchartsChartModule
   ],
   providers: [
     {

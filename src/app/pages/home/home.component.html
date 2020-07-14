@@ -2,7 +2,9 @@
 <mat-card class="family-group-card">
   <mat-card-content>
     <div class="mdc-layout-grid__inner">
-      <div class="mdc-layout-grid__cell--span-6">
+      <div *ngIf="isDoctorLoggedIn()" class="mdc-layout-grid__cell--span-2">
+      </div>
+      <div [class]="isDoctorLoggedIn()? 'mdc-layout-grid__cell--span-8':'mdc-layout-grid__cell--span-6'">
         <mat-card class="family-group-card">
           <mat-card-header>
             <mat-card-title>{{ratingsTitleText}}</mat-card-title>
@@ -28,7 +30,7 @@
           </mat-card-content>
         </mat-card>
       </div>
-      <div class="mdc-layout-grid__cell--span-6">
+      <div *ngIf="!isDoctorLoggedIn()" class="mdc-layout-grid__cell--span-6">
         <mat-card class="family-group-card">
           <mat-card-header>
             <mat-card-title>{{consultationsTitleText}}</mat-card-title>

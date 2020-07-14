@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ABMGenericFormField} from "../../models/generic-form-field";
-import {Validators} from "@angular/forms";
-import {DoctorsService} from "../../services/doctors.service";
-import * as _ from "lodash";
+import {ABMGenericFormField} from '../../models/generic-form-field';
+import {DoctorsService} from '../../services/doctors.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-home',

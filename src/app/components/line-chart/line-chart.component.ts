@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -20,6 +20,10 @@ export class LineChartComponent implements OnInit {
 
   ngOnInit() {
     this.highcharts = Highcharts;
+
+  }
+
+  private renderChart(){
     this.chartOptions = {
       chart: {
         type: "spline"
@@ -40,9 +44,20 @@ export class LineChartComponent implements OnInit {
       },
       series: [{
         name: this.seriesName,
-        data: this.data.map(point => point.average_score)
+        data: []
       }]
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.renderChart();
+    if(changes.data.currentValue){
+      const self = this;
+      setTimeout(function(){
+        self.renderChart();
+        self.chartOptions.series[0].data = changes.data.currentValue.map(point => point.average_score);
+      }, 500);
+    }
   }
 
 }

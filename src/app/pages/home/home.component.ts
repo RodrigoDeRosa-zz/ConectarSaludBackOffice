@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import * as moment from 'moment/moment';
+
 import {ABMGenericFormField} from '../../models/generic-form-field';
 import {DoctorsService} from '../../services/doctors.service';
-import * as _ from 'lodash';
-import {SessionService} from "../../services/session.service";
+import {SessionService} from '../../services/session.service';
+import {StaticsService} from '../../services/statics.service';
+
 
 @Component({
   selector: 'app-home',
@@ -16,19 +20,7 @@ export class HomeComponent implements OnInit {
   ratingsTitleText = 'Calificaciones';
   consultationsTitleText = 'Consultas por especialidad';
 
-  specialitiesData = {
-    'total': 69,
-    'by_specialty': [
-      {
-        'specialty': 'Medicina general',
-        'count': 42
-      },
-      {
-        'specialty': 'Pediatría',
-        'count': 27
-      }
-    ]
-  };
+  specialitiesData = {};
   specialitiesTitle = 'Cantidad de consultas por especialidad';
   specialitiesSeriesName = 'Consultas';
 
@@ -51,8 +43,8 @@ export class HomeComponent implements OnInit {
   ratingsXAxisTitle = 'Día';
 
   ratingFilterData = [
-    new ABMGenericFormField({ name: 'doctor', value: '', title: 'Doctor', type: 'select', size: 'span-4', offsetRight: 'span-8', lookups: []}),
-    new ABMGenericFormField({ name: 'specialties', value: '', title: 'Especialidades', type: 'select', size: 'span-4', offsetRight: 'span-8',
+    new ABMGenericFormField({ name: 'doctor_id', value: '', title: 'Doctor', type: 'select', size: 'span-4', offsetRight: 'span-8', lookups: []}),
+    new ABMGenericFormField({ name: 'specialty', value: '', title: 'Especialidades', type: 'select', size: 'span-4', offsetRight: 'span-8',
       lookups: [
         { value: 'Inmunología', key: 'Inmunología' },
         { value: 'Cardiología', key: 'Cardiología' },
@@ -71,21 +63,33 @@ export class HomeComponent implements OnInit {
         { value: 'Psiquiatría', key: 'Psiquiatría' },
         { value: 'Urología', key: 'Urología' },
       ]}),
-    new ABMGenericFormField({ name: 'date_begin', value: '', title: 'Fecha desde', type: 'date', size: 'span-5' }),
-    new ABMGenericFormField({ name: 'date_end', value: '', title: 'Fecha hasta', type: 'date', size: 'span-4' }),
+    new ABMGenericFormField({ name: 'from_date', value: '', title: 'Fecha desde', type: 'date', size: 'span-5' }),
+    new ABMGenericFormField({ name: 'to_date', value: '', title: 'Fecha hasta', type: 'date', size: 'span-4' }),
     new ABMGenericFormField({ name: 'submit', value: '', title: 'Filtrar', type: 'submit', size: 'span-1' }),
   ];
 
   consultationsFilterData = [];
 
   private user: any;
+  private ratingFilters = {};
+  private consultationFilters = {};
+  private dateFormat = 'DD-MM-YYYY';
 
   constructor(private _doctorService: DoctorsService,
-              private _sessionService: SessionService) {
+              private _sessionService: SessionService,
+              private _staticsService: StaticsService) {
   }
 
   ngOnInit() {
     this.user = this._sessionService.getUserFromSession();
+
+    if(this.isDoctorLoggedIn()){
+      this.ratingFilters.doctor_id = this.user.id;
+    }
+
+    // initialize data
+    this.getScoreData();
+    this.getConsultationsData();
 
     // initialize lookups
     this._doctorService.getAllDoctorsUsingGET({}).subscribe(data => {
@@ -100,7 +104,7 @@ export class HomeComponent implements OnInit {
     }
 
     // initialize second filter
-    this.ratingFilterData.forEach(val => val.name != 'doctor'? this.consultationsFilterData.push(Object.assign({}, val)):[]);
+    this.ratingFilterData.forEach(val => val.name != 'doctor_id' && val.name != 'specialty'? this.consultationsFilterData.push(Object.assign({}, val)):[]);
 
     // clean buttons
     this.ratingFilterData.push( new ABMGenericFormField(
@@ -110,7 +114,7 @@ export class HomeComponent implements OnInit {
         color: 'primary',
         type: 'button',
         size: 'span-1',
-        execute: (value) => this.cleanForm('ratingFilterData') }));
+        execute: (value) => this.cleanForm('ratingFilterData', 'ratingFilters', this.getScoreData.bind(this)) }));
 
     this.consultationsFilterData.push( new ABMGenericFormField(
       { name: 'button',
@@ -119,18 +123,56 @@ export class HomeComponent implements OnInit {
         color: 'primary',
         type: 'button',
         size: 'span-1',
-        execute: (value) => this.cleanForm('consultationsFilterData') }));
+        execute: (value) => this.cleanForm('consultationsFilterData', 'consultationFilters', this.getConsultationsData.bind(this)) }));
   }
 
-  cleanForm(key){
+  getScoreData(callback = () => {}){
+    this._staticsService.getAllStaticsScoreUsingGET(this.ratingFilters).subscribe(data => {
+      this.ratingsData = data.average_by_date;
+      callback();
+    });
+  }
+
+  getConsultationsData(callback = () => {}){
+    this._staticsService.getAllConsultationsGET(this.consultationFilters).subscribe(data => {
+      this.specialitiesData = {
+        total: data.total,
+        by_specialty: data.by_specialty
+      };
+      callback();
+    });
+  }
+
+  cleanForm(key, filtersKey, getData){
     this[key] = this[key].map((field) => {
-      field.value = (this.isDoctorLoggedIn() && field.name != 'doctor' || !this.isDoctorLoggedIn())?'':field.value;
+      field.value = (this.isDoctorLoggedIn() && field.name != 'doctor_id' || !this.isDoctorLoggedIn())?'':field.value;
       return field;
     });
+    this[filtersKey] = {};
+    getData();
   }
 
   isDoctorLoggedIn(){
     return this.user.role !== 'admin';
   }
 
+  filterRatings(callObject: { values: any, onSubmitCallback: Function } = { values: {}, onSubmitCallback: (res) => { console.warn("onSubmitCallback not defined") } }) {
+    this.parseDataFrom(callObject,'ratingFilters');
+    this.getScoreData(() => callObject.onSubmitCallback({}));
+  }
+
+  filterConsultations(callObject: { values: any, onSubmitCallback: Function } = { values: {}, onSubmitCallback: (res) => { console.warn("onSubmitCallback not defined") } }) {
+    this.parseDataFrom(callObject,'consultationFilters');
+    this.getConsultationsData(() => callObject.onSubmitCallback({}));
+  }
+
+  private parseDataFrom(callObject: { values: any; onSubmitCallback: Function },key) {
+    this[key] = callObject.values;
+    if (callObject.values.from_date != '') {
+      this[key].from_date = moment(this[key].from_date).format(this.dateFormat);
+    }
+    if (callObject.values.to_date != '') {
+      this[key].to_date = moment(this[key].to_date).format(this.dateFormat);
+    }
+  }
 }

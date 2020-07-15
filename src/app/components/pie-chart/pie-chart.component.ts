@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -7,7 +7,7 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./pie-chart.component.css']
 })
 
-export class PieChartComponent implements OnInit{
+export class PieChartComponent implements OnInit, OnChanges{
   @Input() data;
   @Input() title;
   @Input() seriesName;
@@ -19,18 +19,21 @@ export class PieChartComponent implements OnInit{
 
   ngOnInit(){
     this.highcharts = Highcharts;
+  }
+
+  private renderChart() {
     this.chartOptions = {
-      chart : {
+      chart: {
         plotBorderWidth: null,
         plotShadow: false
       },
-      title : {
+      title: {
         text: this.title
       },
-      tooltip : {
+      tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
       },
-      plotOptions : {
+      plotOptions: {
         pie: {
           allowPointSelect: true,
           cursor: 'pointer',
@@ -43,12 +46,26 @@ export class PieChartComponent implements OnInit{
           showInLegend: true
         }
       },
-      series : [{
+      series: [{
         type: 'pie',
         name: this.seriesName,
-        data: this.data.by_specialty.map(speciality => [speciality.specialty, speciality.count])
+        data: ["Total", 1]
       }]
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.renderChart();
+    if(changes.data.currentValue && changes.data.currentValue.by_specialty){
+      const self = this;
+      setTimeout(function(){
+        self.renderChart();
+        self.chartOptions.series[0].data = changes.data.currentValue.by_specialty.length>0?
+          changes.data.currentValue.by_specialty.map(speciality => [speciality.specialty, speciality.count])
+          :
+          ["Sin registros", 1];
+      }, 500);
+    }
   }
 
 }

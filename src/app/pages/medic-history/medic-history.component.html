@@ -1,7 +1,15 @@
 <div class="mdc-layout-grid without-padding">
   <div class="mdc-layout-grid__inner">
     <div class="mdc-layout-grid__cell--span-12">
-      <h1 class="mat-headline">{{title}} <button mat-raised-button color="primary" (click)="getConsultation()">OBTENER CONSULTA</button></h1>
+      <h1 class="mat-headline history-header">
+        {{title}}
+        <button mat-raised-button class="consultations-button" (click)="getConsultation()">
+          <div class="consultations-button-order">
+            <mat-icon >videocam</mat-icon>
+            OBTENER CONSULTA
+          </div>
+        </button>
+      </h1>
       <h3 class="mat-h3" style="margin-bottom: 0px;">{{doctor}} - {{licence}}</h3>
     </div>
     <div class="mdc-layout-grid__cell--span-12">

@@ -88,3 +88,25 @@ h3 {
   padding-bottom: 0px!important;
 }
 
+.history-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.consultations-button{
+  font-size: 20px;
+  background-color: #a0dd9f;
+}
+
+.consultations-button-order{
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.consultations-button-order .material-icons {
+  font-size: 50px;
+  margin-left: -25px;
+  margin-bottom: 20px;
+}

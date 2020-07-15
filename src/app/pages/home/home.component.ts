@@ -24,20 +24,7 @@ export class HomeComponent implements OnInit {
   specialitiesTitle = 'Cantidad de consultas por especialidad';
   specialitiesSeriesName = 'Consultas';
 
-  ratingsData = [
-    {
-      'date': '23-08-2020',
-      'average_score': 4.32
-    },
-    {
-      'date': '24-08-2020',
-      'average_score': 1.00
-    },
-    {
-      'date': '23-09-2020',
-      'average_score': 3.20
-    }
-  ];
+  ratingsData = [];
   ratingsTitle = 'Promedio de calificaciones diarias';
   ratingsSeriesName = 'Calificación';
   ratingsXAxisTitle = 'Día';
@@ -71,7 +58,9 @@ export class HomeComponent implements OnInit {
   consultationsFilterData = [];
 
   private user: any;
-  private ratingFilters = {};
+  private ratingFilters = {
+    doctor_id: ''
+  };
   private consultationFilters = {};
   private dateFormat = 'DD-MM-YYYY';
 

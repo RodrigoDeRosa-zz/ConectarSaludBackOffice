@@ -54,7 +54,7 @@ class StaticsService extends __BaseService {
     );
   }
 
-  getAllStaticsScoreUsingGET(params: StaticsService.getAllConsultationsGETParams): __Observable<RestResponseOfResourcesOfStaticsScore> {
+  getAllStaticsScoreUsingGET(params: StaticsService.getAllStaticsScoreGETParams): __Observable<RestResponseOfResourcesOfStaticsScore> {
     return this.getAllStaticsScoreGETResponse(params).pipe(
       __map(_r => _r.body as RestResponseOfResourcesOfStaticsScore)
     );

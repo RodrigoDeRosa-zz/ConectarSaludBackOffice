@@ -1,36 +1,44 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as Highcharts from 'highcharts';
+
+import noData from "highcharts/modules/no-data-to-display";
+noData(Highcharts);
+window.Highcharts = Highcharts;
 
 @Component({
   selector: 'app-pie-chart',
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.css']
 })
-
-export class PieChartComponent implements OnInit{
+export class PieChartComponent implements OnInit, OnChanges{
   @Input() data;
   @Input() title;
   @Input() seriesName;
   highcharts;
   chartOptions;
+  chartConfig: any;
+  private chart: any;
 
   constructor(){
   }
 
   ngOnInit(){
     this.highcharts = Highcharts;
+  }
+
+  private renderChart() {
     this.chartOptions = {
-      chart : {
+      chart: {
         plotBorderWidth: null,
         plotShadow: false
       },
-      title : {
+      title: {
         text: this.title
       },
-      tooltip : {
+      tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
       },
-      plotOptions : {
+      plotOptions: {
         pie: {
           allowPointSelect: true,
           cursor: 'pointer',
@@ -43,12 +51,27 @@ export class PieChartComponent implements OnInit{
           showInLegend: true
         }
       },
-      series : [{
+      series: [{
         type: 'pie',
         name: this.seriesName,
-        data: this.data.by_specialty.map(speciality => [speciality.specialty, speciality.count])
+        data: []
       }]
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.renderChart();
+    if(changes.data.currentValue && changes.data.currentValue.by_specialty){
+      const self = this;
+      setTimeout(function(){
+        self.renderChart();
+        self.chart? self.chart.showNoData():null;
+        self.chartOptions.series[0].data = changes.data.currentValue.by_specialty.length>0?
+          changes.data.currentValue.by_specialty.map(speciality => [speciality.specialty, speciality.count])
+          :
+          [];
+      }, 500);
+    }
   }
 
 }

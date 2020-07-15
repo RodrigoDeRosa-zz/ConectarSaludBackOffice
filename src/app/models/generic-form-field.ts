@@ -97,7 +97,7 @@ export class ABMGenericFormField {
   constructor(option: {
     title: string,
     name: string,
-    type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'button' | 'daily-and-hourly-range',
+    type: 'text' | 'number' | 'checkbox' | 'select' | 'textarea' | 'date' | 'submit' | 'delete' | 'button' | 'daily-and-hourly-range',
     value: any,
     offsetLeft?: string,
     size?: string, //span-6: tamaño de grilla en material

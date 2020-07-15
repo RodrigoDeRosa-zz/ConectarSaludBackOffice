@@ -1,13 +1,63 @@
 <h1>Bienvenido a Conectar Salud</h1>
-<app-pie-chart
-  [data]="specialitiesData"
-  [title]="specialitiesTitle"
-  [seriesName]="specialitiesSeriesName"
->
-</app-pie-chart>
-<app-line-chart
-  [data]="ratingsData"
-  [title]="ratingsTitle"
-  [seriesName]="ratingsSeriesName"
-  [xAxisTitle]="ratingsXAxisTitle">
-</app-line-chart>
+<mat-card class="family-group-card">
+  <mat-card-content>
+    <div class="mdc-layout-grid__inner">
+      <div *ngIf="isDoctorLoggedIn()" class="mdc-layout-grid__cell--span-2">
+      </div>
+      <div [class]="isDoctorLoggedIn()? 'mdc-layout-grid__cell--span-8':'mdc-layout-grid__cell--span-6'">
+        <mat-card class="family-group-card">
+          <mat-card-header>
+            <mat-card-title>{{ratingsTitleText}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell--span-12">
+                <generic-form
+                  #createForm;
+                  [fields]="ratingFilterData"
+                  (onSubmit)="filterRatings($event)"
+                ></generic-form>
+              </div>
+              <div class="mdc-layout-grid__cell--span-12">
+                <app-line-chart
+                  [data]="ratingsData"
+                  [title]="ratingsTitle"
+                  [seriesName]="ratingsSeriesName"
+                  [xAxisTitle]="ratingsXAxisTitle">
+                </app-line-chart>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div *ngIf="!isDoctorLoggedIn()" class="mdc-layout-grid__cell--span-6">
+        <mat-card class="family-group-card">
+          <mat-card-header>
+            <mat-card-title>{{consultationsTitleText}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell--span-12">
+                <br/><br/><br/><br/>
+                <br/><br/><br/><br/> <!-- FIX -->
+                <generic-form
+                  [fields]="consultationsFilterData"
+                  (onSubmit)="filterConsultations($event)"
+                ></generic-form>
+              </div>
+              <div class="mdc-layout-grid__cell--span-12">
+                <app-pie-chart
+                  [data]="specialitiesData"
+                  [title]="specialitiesTitle"
+                  [seriesName]="specialitiesSeriesName"
+                >
+                </app-pie-chart>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+

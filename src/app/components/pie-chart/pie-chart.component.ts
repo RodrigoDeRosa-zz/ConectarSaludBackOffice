@@ -3,7 +3,7 @@ import * as Highcharts from 'highcharts';
 
 import noData from "highcharts/modules/no-data-to-display";
 noData(Highcharts);
-window.Highcharts = Highcharts;
+window['Highcharts'] = Highcharts;
 
 @Component({
   selector: 'app-pie-chart',
@@ -55,7 +55,17 @@ export class PieChartComponent implements OnInit, OnChanges{
         type: 'pie',
         name: this.seriesName,
         data: []
-      }]
+      }],
+      lang: {
+        noData: "Consulta sin resultados"
+      },
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '15px',
+          color: '#303030'
+        }
+      }
     };
   }
 

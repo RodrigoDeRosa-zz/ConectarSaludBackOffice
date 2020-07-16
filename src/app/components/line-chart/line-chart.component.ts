@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -6,7 +6,7 @@ import * as Highcharts from 'highcharts';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements OnInit {
+export class LineChartComponent implements OnInit, OnChanges {
 
   @Input() data;
   @Input() title;
@@ -45,7 +45,17 @@ export class LineChartComponent implements OnInit {
       series: [{
         name: this.seriesName,
         data: []
-      }]
+      }],
+      lang: {
+        noData: "Consulta sin resultados"
+      },
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '15px',
+          color: '#303030'
+        }
+      }
     };
   }
 

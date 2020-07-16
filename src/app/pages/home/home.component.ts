@@ -30,8 +30,8 @@ export class HomeComponent implements OnInit {
   ratingsXAxisTitle = 'Día';
 
   ratingFilterData = [
-    new ABMGenericFormField({ name: 'doctor_id', value: '', title: 'Doctor', type: 'select', size: 'span-4', offsetRight: 'span-8', lookups: []}),
-    new ABMGenericFormField({ name: 'specialty', value: '', title: 'Especialidades', type: 'select', size: 'span-4', offsetRight: 'span-8',
+    new ABMGenericFormField({ name: 'doctor_id', value: '', title: 'Doctor', type: 'select', size: 'span-4', lookups: []}),
+    new ABMGenericFormField({ name: 'specialty', value: '', title: 'Especialidades', type: 'select', size: 'span-4', offsetRight: 'span-4',
       lookups: [
         { value: 'Inmunología', key: 'Inmunología' },
         { value: 'Cardiología', key: 'Cardiología' },
@@ -50,9 +50,9 @@ export class HomeComponent implements OnInit {
         { value: 'Psiquiatría', key: 'Psiquiatría' },
         { value: 'Urología', key: 'Urología' },
       ]}),
-    new ABMGenericFormField({ name: 'from_date', value: '', title: 'Fecha desde', type: 'date', size: 'span-5' }),
+    new ABMGenericFormField({ name: 'from_date', value: '', title: 'Fecha desde', type: 'date', size: 'span-4' }),
     new ABMGenericFormField({ name: 'to_date', value: '', title: 'Fecha hasta', type: 'date', size: 'span-4' }),
-    new ABMGenericFormField({ name: 'submit', value: '', title: 'Filtrar', type: 'submit', size: 'span-1' }),
+    new ABMGenericFormField({ name: 'submit', value: '', title: 'Filtrar', type: 'submit', size: 'span-2' }),
   ];
 
   consultationsFilterData = [];
@@ -100,18 +100,16 @@ export class HomeComponent implements OnInit {
       { name: 'button',
         value: '',
         title: 'Limpiar',
-        color: 'primary',
         type: 'button',
-        size: 'span-1',
+        size: 'span-2',
         execute: (value) => this.cleanForm('ratingFilterData', 'ratingFilters', this.getScoreData.bind(this)) }));
 
     this.consultationsFilterData.push( new ABMGenericFormField(
       { name: 'button',
         value: '',
         title: 'Limpiar',
-        color: 'primary',
         type: 'button',
-        size: 'span-1',
+        size: 'span-2',
         execute: (value) => this.cleanForm('consultationsFilterData', 'consultationFilters', this.getConsultationsData.bind(this)) }));
   }
 

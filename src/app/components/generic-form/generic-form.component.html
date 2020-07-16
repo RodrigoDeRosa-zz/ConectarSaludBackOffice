@@ -86,7 +86,7 @@
 
 				<!-- BUTTON -->
 				<div *ngIf="field.type == 'button' && !field.hidden" class="mdc-layout-grid__cell--{{field.size? field.size: 'span-6'}}">
-					<button mat-button type="button" color="{{field.color? 'field.color':'primary'}}" [disabled]="field.disabled" (click)="field.execute($event,getFormValues())">{{field.title}}</button>
+					<button mat-stroked-button type="button" color="{{field.color? field.color:''}}" [disabled]="field.disabled" (click)="field.execute($event,getFormValues())">{{field.title}}</button>
 				</div>
 
 				<div *ngIf="field.offsetRight" class="mdc-layout-grid__cell--{{field.offsetRight}}">

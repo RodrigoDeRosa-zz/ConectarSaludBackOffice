@@ -1,3 +1,7 @@
 :host >>> button {
-  margin-left: 10px;
+  width: -webkit-fill-available;
+}
+
+:host >>> mat-form-field {
+  width: -webkit-fill-available;
 }

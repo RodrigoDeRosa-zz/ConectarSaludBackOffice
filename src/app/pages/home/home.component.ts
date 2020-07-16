@@ -70,15 +70,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this._sessionService.getUserFromSession();
-
-    if(this.isDoctorLoggedIn()){
-      this.ratingFilters.doctor_id = this.user.id;
-    }
-
-    // initialize data
-    this.getScoreData();
-    this.getConsultationsData();
 
     // initialize lookups
     this._doctorService.getAllDoctorsUsingGET({}).subscribe(data => {
@@ -87,10 +78,17 @@ export class HomeComponent implements OnInit {
       );
     });
 
+    this.user = this._sessionService.getUserFromSession();
+
     if(this.isDoctorLoggedIn()){
-      this.ratingFilterData[this.INDEX_DOCTOR_SELECT].value = '71c4a137-601d-425d-8a95-7208b0c0ae73';
+      this.ratingFilters.doctor_id = this.user.id;
+      this.ratingFilterData[this.INDEX_DOCTOR_SELECT].value = this.user.id;
       this.ratingFilterData[this.INDEX_DOCTOR_SELECT].disabled = true;
     }
+
+    // initialize data
+    this.getScoreData();
+    this.getConsultationsData();
 
     // initialize second filter
     this.ratingFilterData.forEach(val => val.name != 'doctor_id' && val.name != 'specialty'? this.consultationsFilterData.push(Object.assign({}, val)):[]);
@@ -155,6 +153,9 @@ export class HomeComponent implements OnInit {
 
   private parseDataFrom(callObject: { values: any; onSubmitCallback: Function },key) {
     this[key] = callObject.values;
+    if(this.isDoctorLoggedIn()){
+      this[key].doctor_id = this.user.id;
+    }
     if (callObject.values.from_date != '') {
       this[key].from_date = moment(this[key].from_date).format(this.dateFormat);
     }

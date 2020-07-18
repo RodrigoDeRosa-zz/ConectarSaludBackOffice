@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
         { value: 'Neumonología', key: 'Neumonología' },
         { value: 'Neurología', key: 'Neurología' },
         { value: 'Nutrición', key: 'Nutrición' },
-        { value: 'Otorrinonaringología', key: 'Otorrinonaringología' },
+        { value: 'Otorrinolaringología', key: 'Otorrinolaringologia' },
         { value: 'Pediatría', key: 'Pediatría' },
         { value: 'Psiquiatría', key: 'Psiquiatría' },
         { value: 'Urología', key: 'Urología' },

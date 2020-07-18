@@ -57,7 +57,7 @@ export class PieChartComponent implements OnInit, OnChanges{
         data: []
       }],
       lang: {
-        noData: "Consulta sin resultados"
+        noData: "No hay información disponible"
       },
       noData: {
         style: {
